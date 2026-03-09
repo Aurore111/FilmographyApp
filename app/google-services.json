@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "532400791937",
+    "project_id": "filmographyapp-8fb1e",
+    "storage_bucket": "filmographyapp-8fb1e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:532400791937:android:6fc1a4c407da9bbf39c880",
+        "android_client_info": {
+          "package_name": "fr.isen.aurore.filmographyapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBi-ti1StSwEVttcDlcWCjHqD_yjtGOATs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

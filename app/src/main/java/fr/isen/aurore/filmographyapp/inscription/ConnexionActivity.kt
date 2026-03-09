@@ -11,11 +11,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.google.firebase.auth.FirebaseAuth
 import fr.isen.aurore.filmographyapp.inscription.ui.theme.FilmographyAppTheme
 
 class ConnexionActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        FirebaseAuth.getInstance().signOut() //deconnexion a chaque fois que je lance l'appli
         enableEdgeToEdge()
         setContent {
             FilmographyAppTheme {

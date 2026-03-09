@@ -28,6 +28,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.vector.ImageVector
+import fr.isen.aurore.filmographyapp.inscription.Connexion
 
 enum class NavigationItem(
     val title: String,
@@ -90,7 +91,7 @@ class MainActivity : ComponentActivity() {
                         NavigationItem.Home -> CategoriesScreen(Modifier.padding(innerPadding))
                       //  NavigationItem.List -> ListFilm(Modifier.padding(innerPadding))
                         NavigationItem.Search -> FilmDescription(Modifier.padding(innerPadding), showBackButton = false)
-                        NavigationItem.Account -> {}
+                        NavigationItem.Account -> Connexion(Modifier.padding(innerPadding))
                     }
                 }
             }

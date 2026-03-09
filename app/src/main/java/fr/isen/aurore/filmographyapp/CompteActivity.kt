@@ -1,4 +1,4 @@
-package fr.isen.aurore.filmographyapp.inscription
+package fr.isen.aurore.filmographyapp
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -11,17 +11,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import fr.isen.aurore.filmographyapp.inscription.ui.theme.FilmographyAppTheme
+import fr.isen.aurore.filmographyapp.ui.theme.FilmographyAppTheme
 
-class ConnexionActivity : ComponentActivity() {
+class CompteActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             FilmographyAppTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Connexion(
-                       modifier = Modifier.padding()
+                    Compte(
+                        modifier = Modifier.padding(innerPadding)
                     )
                 }
             }

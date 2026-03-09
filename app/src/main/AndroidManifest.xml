@@ -18,7 +18,7 @@
             android:theme="@style/Theme.FilmographyApp" />
         <activity
             android:name=".inscription.ConnexionActivity"
-            android:exported="false"
+            android:exported="true"
             android:label="@string/title_activity_connexion"
             android:theme="@style/Theme.FilmographyApp" />
         <activity

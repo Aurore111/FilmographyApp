@@ -17,7 +17,6 @@ import fr.isen.aurore.filmographyapp.inscription.ui.theme.FilmographyAppTheme
 class ConnexionActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        FirebaseAuth.getInstance().signOut() //deconnexion a chaque fois que je lance l'appli
         enableEdgeToEdge()
         setContent {
             FilmographyAppTheme {

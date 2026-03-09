@@ -19,26 +19,24 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.sp
+import androidx.compose.runtime.snapshots.SnapshotStateList
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -57,7 +55,7 @@ fun FilmDescription(modifier: Modifier)
 
     // Statuts possibles
     val statuses = listOf("Vu", "À voir", "Possède en DVD/Blu-Ray", "Veut s'en débarrasser")
-    var selectedStatus by remember { mutableStateOf<String?>(null) }
+    var selectedStatuses = remember { mutableStateListOf<String?>() }
 
     //utilisateur qui possedent le fil, donné brute
     val owners = listOf("Alice", "Bob", "Charlie")
@@ -130,12 +128,18 @@ fun FilmDescription(modifier: Modifier)
                                 verticalAlignment = Alignment.CenterVertically,
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .clickable { selectedStatus = status }
+                                    .clickable {
+                                        if (selectedStatuses.contains(status)) selectedStatuses.remove(status)
+                                        else selectedStatuses.add(status)
+                                    }
                                     .padding(vertical = 4.dp)
                             ) {
-                                RadioButton(
-                                    selected = selectedStatus == status,
-                                    onClick = { selectedStatus = status }
+                                Checkbox(
+                                    checked = selectedStatuses.contains(status),
+                                    onCheckedChange = {
+                                        if (it) selectedStatuses.add(status)
+                                        else selectedStatuses.remove(status)
+                                    }
                                 )
                                 Text(text = status, fontSize = 16.sp, color = Color(0xFF5D4037))
                             }

@@ -9,19 +9,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import fr.isen.aurore.filmographyapp.ui.theme.FilmographyAppTheme
 import com.google.firebase.database.FirebaseDatabase
 import android.util.Log
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -30,8 +26,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.google.firebase.auth.FirebaseAuth
-import fr.isen.aurore.filmographyapp.inscription.Connexion
-import fr.isen.aurore.filmographyapp.inscription.ConnexionActivity
 
 enum class NavigationItem(
     val title: String,
@@ -39,7 +33,7 @@ enum class NavigationItem(
     val route: String
 ){
     Home(title = "Catégories Films", Icons.Default.Home, route = "Home"),
-//    List(title = "List Films", Icons.Default.Menu, route = "List"),
+    List(title = "Films Own", Icons.Default.List, route = "List"),
 //    Fav(title = "Favoris", Icons.Default.Favorite, route = "Fav"),
     Search(title = "Descritions Films", Icons.Default.CheckCircle, route = "Search"),
     Account(title = "Compte", Icons.Default.AccountCircle, route = "Account")
@@ -97,12 +91,12 @@ class MainActivity : ComponentActivity() {
                 ) { innerPadding ->
                     when (currentItem.value) {
                         NavigationItem.Home -> CategoriesScreen(Modifier.padding(innerPadding))
-                      //  NavigationItem.List -> ListFilm(Modifier.padding(innerPadding))
                         NavigationItem.Search -> FilmDescription(
                             Modifier.padding(innerPadding),
                             filmTitle = "Toy Story",
                             showBackButton = false
                         )
+                        NavigationItem.List -> FilmOwn(Modifier.padding(innerPadding))
                         NavigationItem.Account -> Compte(Modifier.padding(innerPadding))
                     }
                 }

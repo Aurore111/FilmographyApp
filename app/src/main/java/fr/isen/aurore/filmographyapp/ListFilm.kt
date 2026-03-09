@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun ListFilm (modifier: Modifier) {
     //  On remplace le brute avec l'appel API
+    val context = LocalContext.current //pour la fleche retour en arriere dans la topBar
     val franchises = listOf("La Menace Fantome", "L'attaque des Clones", "La revanche des Sith", "Un nouvel espoir", "l'empire contre attaque", "Le retour du Jedi")
 
     Scaffold (
@@ -46,6 +47,11 @@ fun ListFilm (modifier: Modifier) {
                         fontWeight = FontWeight.ExtraBold,
                         color = Color(0xFF3E2723)
                     )
+                },
+                navigationIcon = {   //fleche retour à la page précédente
+                    IconButton (onClick = { (context as? ComponentActivity)?.finish() }) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Retour")
+                    }
                 }
             )
         }

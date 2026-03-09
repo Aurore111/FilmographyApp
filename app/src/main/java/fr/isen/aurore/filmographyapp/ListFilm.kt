@@ -39,7 +39,7 @@ fun ListFilm(modifier: Modifier, categoryName: String?) {
 
             snapshot.children.forEach { category ->
 
-                val nomCategorie = category.child("categorie").value.toString()
+                val nomCategorie = category.child("category").value.toString()
 
                 if (nomCategorie == categoryName) {
 

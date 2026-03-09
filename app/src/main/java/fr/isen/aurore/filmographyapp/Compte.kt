@@ -1,5 +1,7 @@
 package fr.isen.aurore.filmographyapp
 
+import android.content.Intent
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,8 +10,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -51,5 +56,20 @@ fun Compte(modifier: Modifier)
             fontWeight = FontWeight.Bold,
             color = Color(0xFF3E2723)
         )
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        Button (
+            onClick = {
+                FirebaseAuth.getInstance().signOut()
+                context.startActivity(Intent(context, fr.isen.aurore.filmographyapp.inscription.ConnexionActivity::class.java))
+                (context as? ComponentActivity)?.finish()
+            },
+            shape = RoundedCornerShape(12.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3E2723))
+        ) {
+            Text(text = "Se déconnecter", color = Color.White)
+        }
+
     }
 }

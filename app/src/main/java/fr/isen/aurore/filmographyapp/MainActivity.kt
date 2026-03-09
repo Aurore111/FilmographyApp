@@ -91,7 +91,7 @@ class MainActivity : ComponentActivity() {
                         NavigationItem.Home -> CategoriesScreen(Modifier.padding(innerPadding))
                       //  NavigationItem.List -> ListFilm(Modifier.padding(innerPadding))
                         NavigationItem.Search -> FilmDescription(Modifier.padding(innerPadding), showBackButton = false)
-                        NavigationItem.Account -> Connexion(Modifier.padding(innerPadding))
+                        NavigationItem.Account -> Compte(Modifier.padding(innerPadding))
                     }
                 }
             }

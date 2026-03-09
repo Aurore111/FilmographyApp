@@ -1,6 +1,7 @@
 package fr.isen.aurore.filmographyapp.inscription
 
 import android.content.Intent
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
@@ -70,7 +71,7 @@ fun Connexion(modifier: Modifier) {
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
-            label = { Text("Mot de passe") },
+            label = { Text("Mot de passe (6 caractères)") },
             visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(12.dp)
@@ -84,10 +85,12 @@ fun Connexion(modifier: Modifier) {
                     // Connexion
                     auth.signInWithEmailAndPassword(email, password)
                         .addOnSuccessListener {
-                            context.startActivity(Intent(context, MainActivity::class.java))
+                            Log.d("AUTH", "Connexion réussie")
+                            context.startActivity(Intent(context, MainActivity::class.java)) //connecté ou inscrit ca ouvre la page indiqué dans mainActivity
                             (context as? ComponentActivity)?.finish()
                         }
                         .addOnFailureListener {
+                            Log.d("AUTH", "Erreur connexion : ${it.message}")
                             Toast.makeText(context, "Erreur : ${it.message}", Toast.LENGTH_SHORT).show()
                         }
                 } else
@@ -95,10 +98,12 @@ fun Connexion(modifier: Modifier) {
                     // inscription
                     auth.createUserWithEmailAndPassword(email, password)
                         .addOnSuccessListener {
+                            Log.d("AUTH", "Inscription réussie")
                             context.startActivity(Intent(context, MainActivity::class.java))
                             (context as? ComponentActivity)?.finish()
                         }
                         .addOnFailureListener {
+                            Log.d("AUTH", "Erreur inscription : ${it.message}")
                             Toast.makeText(context, "Erreur : ${it.message}", Toast.LENGTH_SHORT).show()
                         }
                 }

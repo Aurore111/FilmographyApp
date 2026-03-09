@@ -1,5 +1,6 @@
 package fr.isen.aurore.filmographyapp
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -28,7 +29,9 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.google.firebase.auth.FirebaseAuth
 import fr.isen.aurore.filmographyapp.inscription.Connexion
+import fr.isen.aurore.filmographyapp.inscription.ConnexionActivity
 
 enum class NavigationItem(
     val title: String,
@@ -57,6 +60,11 @@ class MainActivity : ComponentActivity() {
             Log.d("FIREBASE_TEST", "Categories count: " + snapshot.childrenCount)
         }.addOnFailureListener {
             Log.d("FIREBASE_TEST", "DATABASE ERROR")
+        }
+        if (FirebaseAuth.getInstance().currentUser == null) {
+            startActivity(Intent(this, fr.isen.aurore.filmographyapp.inscription.ConnexionActivity::class.java))
+            finish()
+            return
         }
         enableEdgeToEdge()
         setContent {

@@ -14,6 +14,33 @@ import androidx.compose.ui.tooling.preview.Preview
 import fr.isen.aurore.filmographyapp.ui.theme.FilmographyAppTheme
 import com.google.firebase.database.FirebaseDatabase
 import android.util.Log
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.vector.ImageVector
+
+enum class NavigationItem(
+    val title: String,
+    val icon: ImageVector,
+    val route: String
+){
+    Home(title = "Catégories Films", Icons.Default.Home, route = "Home"),
+//    List(title = "List Films", Icons.Default.Menu, route = "List"),
+//    Fav(title = "Favoris", Icons.Default.Favorite, route = "Fav"),
+    Search(title = "Descritions Films", Icons.Default.CheckCircle, route = "Search"),
+    Account(title = "Compte", Icons.Default.AccountCircle, route = "Account")
+
+}
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,7 +60,39 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             FilmographyAppTheme {
-               CategoriesScreen(modifier = Modifier)
+
+                val currentItem: MutableState<NavigationItem> =
+                    remember { mutableStateOf(NavigationItem.Home) }
+
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    bottomBar = {
+                        NavigationBar {
+                            NavigationItem.entries.forEach { navigationItem ->
+                                NavigationBarItem(
+                                    selected = currentItem.value == navigationItem,
+                                    onClick = {
+                                        currentItem.value = navigationItem
+                                    },
+                                    label = { Text(text = navigationItem.title) },
+                                    icon = {
+                                        Icon(
+                                            imageVector = navigationItem.icon,
+                                            contentDescription = ""
+                                        )
+                                    }
+                                )
+                            }
+                        }
+                    }
+                ) { innerPadding ->
+                    when (currentItem.value) {
+                        NavigationItem.Home -> CategoriesScreen(Modifier.padding(innerPadding))
+                      //  NavigationItem.List -> ListFilm(Modifier.padding(innerPadding))
+                        NavigationItem.Search -> FilmDescription(Modifier.padding(innerPadding), showBackButton = false)
+                        NavigationItem.Account -> {}
+                    }
+                }
             }
         }
     }

@@ -1,4 +1,4 @@
-package fr.isen.aurore.filmographyapp
+package fr.isen.aurore.filmographyapp.inscription
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -11,24 +11,37 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import fr.isen.aurore.filmographyapp.ui.theme.FilmographyAppTheme
+import fr.isen.aurore.filmographyapp.inscription.ui.theme.FilmographyAppTheme
 
-class FilmDescriptionActivity : ComponentActivity() {
+class ConnexionActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val film = intent.getStringExtra("Film") ?: ""
-        val showBackButton = intent.getBooleanExtra("showBackButton", false)
-
         enableEdgeToEdge()
         setContent {
             FilmographyAppTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    FilmDescription(
-                        modifier = Modifier.padding(innerPadding),
-                        showBackButton = showBackButton
+                    Greeting(
+                        name = "Android",
+                        modifier = Modifier.padding(innerPadding)
                     )
                 }
             }
         }
+    }
+}
+
+@Composable
+fun Greeting(name: String, modifier: Modifier = Modifier) {
+    Text(
+        text = "Hello $name!",
+        modifier = modifier
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun GreetingPreview() {
+    FilmographyAppTheme {
+        Greeting("Android")
     }
 }

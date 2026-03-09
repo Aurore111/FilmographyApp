@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">FilmographyApp</string>
+    <string name="title_activity_categories">CategoriesActivity</string>
+    <string name="title_activity_film_description">FilmDescriptionActivity</string>
 </resources>

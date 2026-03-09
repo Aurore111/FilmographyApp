@@ -13,13 +13,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import fr.isen.aurore.filmographyapp.ui.theme.FilmographyAppTheme
 
-class MainActivity : ComponentActivity() {
+class FilmDescriptionActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             FilmographyAppTheme {
-               CategoriesScreen(modifier = Modifier)
+                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                    FilmDescription(
+                        modifier = Modifier.padding(innerPadding)
+                    )
+                }
             }
         }
     }

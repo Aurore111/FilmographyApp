@@ -12,6 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FilmographyApp">
         <activity
+            android:name=".inscription.ConnexionActivity"
+            android:exported="false"
+            android:label="@string/title_activity_connexion"
+            android:theme="@style/Theme.FilmographyApp" />
+        <activity
             android:name=".FilmDescriptionActivity"
             android:exported="false"
             android:label="@string/title_activity_film_description"

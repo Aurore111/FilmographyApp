@@ -23,6 +23,7 @@ fun FilmDescription(modifier: Modifier, filmTitle: String?, showBackButton: Bool
 
     val context = LocalContext.current
 
+    var title by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
     var genre by remember { mutableStateOf("") }
     var annee by remember { mutableStateOf("") }
@@ -33,9 +34,11 @@ fun FilmDescription(modifier: Modifier, filmTitle: String?, showBackButton: Bool
 
     val ref = database.getReference("categories")
 
-    LaunchedEffect(filmTitle) {
+    LaunchedEffect(Unit) {
 
         ref.get().addOnSuccessListener { snapshot ->
+
+            val filmsList = mutableListOf<com.google.firebase.database.DataSnapshot>()
 
             snapshot.children.forEach { category ->
 
@@ -43,19 +46,22 @@ fun FilmDescription(modifier: Modifier, filmTitle: String?, showBackButton: Bool
 
                     franchise.child("films").children.forEach { film ->
 
-                        val titre = film.child("titre").value.toString()
-
-                        if (filmTitle == null || titre.contains(filmTitle)) {
-
-                            description = film.child("description").value.toString()
-                            genre = film.child("genre").value.toString()
-                            annee = film.child("annee").value.toString()
-
-                        }
+                        filmsList.add(film)
 
                     }
 
                 }
+
+            }
+
+            if (filmsList.isNotEmpty()) {
+
+                val randomFilm = filmsList.random()
+
+                title = randomFilm.child("titre").value.toString()
+                description = randomFilm.child("description").value.toString()
+                genre = randomFilm.child("genre").value.toString()
+                annee = randomFilm.child("annee").value.toString()
 
             }
 
@@ -68,7 +74,7 @@ fun FilmDescription(modifier: Modifier, filmTitle: String?, showBackButton: Bool
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = filmTitle ?: "",
+                        text = title,
                         fontWeight = FontWeight.ExtraBold,
                         color = Color(0xFF3E2723)
                     )
@@ -78,7 +84,10 @@ fun FilmDescription(modifier: Modifier, filmTitle: String?, showBackButton: Bool
                         IconButton(onClick = {
                             (context as? ComponentActivity)?.finish()
                         }) {
-                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Retour")
+                            Icon(
+                                Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = "Retour"
+                            )
                         }
                     }
                 }
@@ -100,7 +109,9 @@ fun FilmDescription(modifier: Modifier, filmTitle: String?, showBackButton: Bool
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color.White.copy(alpha = 0.8f))
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color.White.copy(alpha = 0.8f)
+                    )
                 ) {
 
                     Column(
@@ -109,18 +120,27 @@ fun FilmDescription(modifier: Modifier, filmTitle: String?, showBackButton: Bool
                     ) {
 
                         Text(
-                            filmTitle ?: "",
+                            text = title,
                             fontWeight = FontWeight.ExtraBold,
                             fontSize = 22.sp
                         )
 
-                        Text("Année : $annee", fontSize = 16.sp)
+                        Text(
+                            text = "Année : $annee",
+                            fontSize = 16.sp
+                        )
 
-                        Text("Genre : $genre", fontSize = 16.sp)
+                        Text(
+                            text = "Genre : $genre",
+                            fontSize = 16.sp
+                        )
 
                         Spacer(modifier = Modifier.height(8.dp))
 
-                        Text(description, fontSize = 16.sp)
+                        Text(
+                            text = description,
+                            fontSize = 16.sp
+                        )
 
                     }
 

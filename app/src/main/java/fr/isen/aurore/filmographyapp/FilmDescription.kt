@@ -128,16 +128,16 @@ fun FilmDescription(modifier: Modifier)
                                 verticalAlignment = Alignment.CenterVertically,
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .clickable {
-                                        if (selectedStatuses.contains(status)) selectedStatuses.remove(status)
-                                        else selectedStatuses.add(status)
-                                    }
                                     .padding(vertical = 4.dp)
                             ) {
                                 Checkbox(
                                     checked = selectedStatuses.contains(status),
-                                    onCheckedChange = {
-                                        if (it) selectedStatuses.add(status)
+                                    onCheckedChange = {  //on ne peut pas coché a "vu" et "a voir" en meme temps
+                                        if (it) {
+                                            if (status == "Vu") selectedStatuses.remove("À voir")
+                                            if (status == "À voir") selectedStatuses.remove("Vu")
+                                            selectedStatuses.add(status)
+                                        }
                                         else selectedStatuses.remove(status)
                                     }
                                 )

@@ -64,7 +64,7 @@ fun CategoriesScreen(modifier: Modifier) {
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = "Univers Disney",
+                        text = "Univers Films",
                         fontWeight = FontWeight.ExtraBold,
                         color = Color(0xFF3E2723)
                     )

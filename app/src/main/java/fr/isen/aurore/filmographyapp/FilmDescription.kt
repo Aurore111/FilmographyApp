@@ -1,5 +1,6 @@
 package fr.isen.aurore.filmographyapp
 
+import android.widget.Button
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -41,7 +42,7 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FilmDescription(modifier: Modifier)
+fun FilmDescription(modifier: Modifier, showBackButton: Boolean = false)
 {
     val context = LocalContext.current
     val film = mapOf(
@@ -72,9 +73,11 @@ fun FilmDescription(modifier: Modifier)
                     )
                 },
                 navigationIcon = {   //fleche retour à la page précédente
-                    IconButton (onClick = { (context as? ComponentActivity)?.finish() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Retour")
-                    }
+                   if(showBackButton) {
+                       IconButton(onClick = { (context as? ComponentActivity)?.finish() }) {
+                           Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Retour")
+                       }
+                   }
                 }
             )
         }

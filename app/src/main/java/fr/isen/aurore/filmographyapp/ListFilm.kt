@@ -73,6 +73,7 @@ fun ListFilm (modifier: Modifier) {
                     onClick = {
                         val intent = Intent(context, FilmDescriptionActivity::class.java)
                         intent.putExtra("Film", univers)
+                        intent.putExtra("showBackButton", true)
                         context.startActivity(intent)
                               },
                     modifier = Modifier

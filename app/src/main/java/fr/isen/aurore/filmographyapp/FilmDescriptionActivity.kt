@@ -16,12 +16,16 @@ import fr.isen.aurore.filmographyapp.ui.theme.FilmographyAppTheme
 class FilmDescriptionActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val film = intent.getStringExtra("Film") ?: ""
+        val showBackButton = intent.getBooleanExtra("showBackButton", false)
+
         enableEdgeToEdge()
         setContent {
             FilmographyAppTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     FilmDescription(
-                        modifier = Modifier.padding(innerPadding)
+                        modifier = Modifier.padding(innerPadding),
+                        showBackButton = showBackButton
                     )
                 }
             }

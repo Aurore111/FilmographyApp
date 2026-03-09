@@ -15,6 +15,8 @@ import fr.isen.aurore.filmographyapp.ui.theme.FilmographyAppTheme
 import com.google.firebase.database.FirebaseDatabase
 import android.util.Log
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
@@ -35,7 +37,9 @@ enum class NavigationItem(
     Home(title = "Catégories Films", Icons.Default.Home, route = "Home"),
     List(title = "List Films", Icons.Default.Menu, route = "List"),
 //    Fav(title = "Favoris", Icons.Default.Favorite, route = "Fav"),
-    Search(title = "Descritions Films", Icons.Default.Search, route = "Search")
+    Search(title = "Descritions Films", Icons.Default.CheckCircle, route = "Search"),
+    Account(title = "Compte", Icons.Default.AccountCircle, route = "Account")
+
 }
 
 class MainActivity : ComponentActivity() {
@@ -86,6 +90,8 @@ class MainActivity : ComponentActivity() {
                         NavigationItem.Home -> CategoriesScreen(Modifier.padding(innerPadding))
                         NavigationItem.List -> ListFilm(Modifier.padding(innerPadding))
                         NavigationItem.Search -> FilmDescription(Modifier.padding(innerPadding))
+                        NavigationItem.Account -> {}
+
                     }
                 }
             }

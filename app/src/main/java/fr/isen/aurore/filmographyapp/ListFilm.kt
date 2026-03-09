@@ -33,31 +33,21 @@ fun ListFilm(modifier: Modifier, categoryName: String?) {
 
     LaunchedEffect(categoryName) {
 
+        val database = FirebaseDatabase.getInstance("https://filmographyapp-8fb1e-default-rtdb.europe-west1.firebasedatabase.app")
+        val ref = database.getReference("categories")
+
         ref.get().addOnSuccessListener { snapshot ->
 
             films.clear()
 
             snapshot.children.forEach { category ->
 
-                val nomCategorie = category.child("category").value.toString()
+                val nomCategorie = category.child("categorie").value.toString()
 
                 if (nomCategorie == categoryName) {
 
                     category.child("franchises").children.forEach { franchise ->
 
-                        // films avec sous sagas
-                        franchise.child("sous_sagas").children.forEach { saga ->
-
-                            saga.child("films").children.forEach { film ->
-
-                                val titre = film.child("titre").value.toString()
-                                films.add(titre)
-
-                            }
-
-                        }
-
-                        // films sans sous saga
                         franchise.child("films").children.forEach { film ->
 
                             val titre = film.child("titre").value.toString()
@@ -74,7 +64,6 @@ fun ListFilm(modifier: Modifier, categoryName: String?) {
         }
 
     }
-
     Scaffold(
 
         topBar = {

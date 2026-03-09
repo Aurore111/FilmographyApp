@@ -90,7 +90,11 @@ class MainActivity : ComponentActivity() {
                     when (currentItem.value) {
                         NavigationItem.Home -> CategoriesScreen(Modifier.padding(innerPadding))
                       //  NavigationItem.List -> ListFilm(Modifier.padding(innerPadding))
-                        NavigationItem.Search -> FilmDescription(Modifier.padding(innerPadding), showBackButton = false)
+                        NavigationItem.Search -> FilmDescription(
+                            Modifier.padding(innerPadding),
+                            filmTitle = "Toy Story",
+                            showBackButton = false
+                        )
                         NavigationItem.Account -> Compte(Modifier.padding(innerPadding))
                     }
                 }

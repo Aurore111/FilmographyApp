@@ -30,13 +30,34 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.runtime.*
+import com.google.firebase.database.FirebaseDatabase
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoriesScreen(modifier: Modifier) {
     val context = LocalContext.current
     //  On remplace le brute avec l'appel API
-    val franchises = listOf("Marvel", "Disney", "Pixar", "Star Wars", "Avatar", "National Geographic")
+    var franchises by remember { mutableStateOf(listOf<String>()) }
+
+    LaunchedEffect(Unit) {
+        val database = FirebaseDatabase.getInstance(
+            "https://filmographyapp-8fb1e-default-rtdb.europe-west1.firebasedatabase.app"
+        )
+
+        val ref = database.getReference("categories")
+
+        ref.get().addOnSuccessListener { snapshot ->
+            val list = mutableListOf<String>()
+
+            snapshot.children.forEach { category ->
+                val name = category.child("categorie").value.toString()
+                list.add(name)
+            }
+
+            franchises = list
+        }
+    }
 
     Scaffold (
         topBar = {

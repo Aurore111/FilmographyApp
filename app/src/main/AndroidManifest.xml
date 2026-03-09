@@ -12,6 +12,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FilmographyApp">
         <activity
+            android:name=".FilmDescriptionActivity"
+            android:exported="false"
+            android:label="@string/title_activity_film_description"
+            android:theme="@style/Theme.FilmographyApp" />
+        <activity
+            android:name=".CategoriesActivity"
+            android:exported="false"
+            android:label="@string/title_activity_categories"
+            android:theme="@style/Theme.FilmographyApp" />
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"

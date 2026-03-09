@@ -1,5 +1,8 @@
 package fr.isen.aurore.filmographyapp.inscription
 
+import android.content.Intent
+import android.widget.Toast
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,6 +30,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import com.google.firebase.auth.FirebaseAuth
+import fr.isen.aurore.filmographyapp.MainActivity
 
 @Composable
 fun Connexion(modifier: Modifier) {
@@ -74,7 +79,29 @@ fun Connexion(modifier: Modifier) {
 
         Button (
             onClick = {
-                // connexion ou inscription Firebase ici plus tard
+                val auth = FirebaseAuth.getInstance()
+                if (isLogin) {
+                    // Connexion
+                    auth.signInWithEmailAndPassword(email, password)
+                        .addOnSuccessListener {
+                            context.startActivity(Intent(context, MainActivity::class.java))
+                            (context as? ComponentActivity)?.finish()
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(context, "Erreur : ${it.message}", Toast.LENGTH_SHORT).show()
+                        }
+                } else
+                {
+                    // inscription
+                    auth.createUserWithEmailAndPassword(email, password)
+                        .addOnSuccessListener {
+                            context.startActivity(Intent(context, MainActivity::class.java))
+                            (context as? ComponentActivity)?.finish()
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(context, "Erreur : ${it.message}", Toast.LENGTH_SHORT).show()
+                        }
+                }
             },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(12.dp),

@@ -18,9 +18,11 @@ import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.SearchBar
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,9 +37,9 @@ enum class NavigationItem(
     Home(title = "Catégories", Icons.Default.Home, route = "Home"),
     List(title = "Possédés", Icons.Default.List, route = "List"),
 //    Fav(title = "Favoris", Icons.Default.Favorite, route = "Fav"),
-    Search(title = "Descritions", Icons.Default.CheckCircle, route = "Search"),
-    Account(title = "Compte", Icons.Default.AccountCircle, route = "Account")
-
+    CheckCircle(title = "Descritions", Icons.Default.CheckCircle, route = "CheckCircle"),
+    Account(title = "Compte", Icons.Default.AccountCircle, route = "Account"),
+    Search(title = "Search", Icons.Default.Search, route = "Search")
 }
 
 class MainActivity : ComponentActivity() {
@@ -91,13 +93,14 @@ class MainActivity : ComponentActivity() {
                 ) { innerPadding ->
                     when (currentItem.value) {
                         NavigationItem.Home -> CategoriesScreen(Modifier.padding(innerPadding))
-                        NavigationItem.Search -> FilmDescription(
+                        NavigationItem.CheckCircle -> FilmDescription(
                             Modifier.padding(innerPadding),
                             filmTitle = "Toy Story",
                             showBackButton = false
                         )
-                        NavigationItem.List -> FilmOwn(Modifier.padding(innerPadding))
+                        NavigationItem.Search -> { }
                         NavigationItem.Account -> Compte(Modifier.padding(innerPadding))
+                        NavigationItem.List -> FilmOwn(Modifier.padding(innerPadding))
                     }
                 }
             }

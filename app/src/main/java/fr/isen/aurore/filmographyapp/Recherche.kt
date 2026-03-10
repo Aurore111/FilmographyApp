@@ -219,21 +219,21 @@ fun FilmCarousel(films: List<Map<String, String>>, context: android.content.Cont
                                 modifier = Modifier.size(24.dp)
                             )
                         }
-                        Column(modifier = Modifier.padding(8.dp)) {
-                            Text(
-                                text = film["title"] ?: "",
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 12.sp,
-                                color = Color(0xFF3E2723),
-                                maxLines = 2,
-                                overflow = TextOverflow.Ellipsis
+                    }
+                    Column(modifier = Modifier.padding(8.dp)) {
+                        Text(
+                            text = film["title"] ?: "",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 12.sp,
+                            color = Color(0xFF3E2723),
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis
                             )
-                            Text(
-                                text = film["year"] ?: "",
-                                fontSize = 11.sp,
-                                color = Color(0xFF8D6E63)
+                        Text(
+                            text = film["year"] ?: "",
+                            fontSize = 11.sp,
+                            color = Color(0xFF8D6E63)
                             )
-                        }
                     }
                 }
             }

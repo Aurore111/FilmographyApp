@@ -1,7 +1,6 @@
 package fr.isen.aurore.filmographyapp
 
 import android.content.Intent
-import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.aspectRatio
@@ -26,10 +25,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.runtime.*
 import com.google.firebase.database.FirebaseDatabase
 
@@ -40,7 +35,7 @@ fun CategoriesScreen(modifier: Modifier) {
 
     val context = LocalContext.current
 
-    // On remplace le brute avec l'appel API
+
     var franchises by remember { mutableStateOf(listOf<String>()) }
 
     LaunchedEffect(Unit) {

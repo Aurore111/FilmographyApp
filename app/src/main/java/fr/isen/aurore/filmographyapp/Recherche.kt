@@ -101,7 +101,7 @@ fun Recherche(modifier: Modifier) { //page d'acceuil et de recherche de films
                     containerColor = Color(0xFFE50914)),
                 title = {
                     Text(
-                        text = "Recherche",
+                        text = "Home",
                         fontWeight = FontWeight.ExtraBold,
                         color = Color.White
                     )
@@ -138,7 +138,20 @@ fun Recherche(modifier: Modifier) { //page d'acceuil et de recherche de films
                 )
             }
             item {
-                Text("Univers", fontWeight = FontWeight.Bold, fontSize = 18.sp, color = Color.White)
+                Box( //ligne rouge delimitation de mes 3 parties
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color(0xFFE50914), RoundedCornerShape(8.dp))
+                        .padding(horizontal = 8.dp, vertical = 6.dp)
+
+                ) {
+                    Text(
+                        "Univers",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 18.sp,
+                        color = Color.White
+                    )
+                }
             }
             byUniverse.forEach { (universe, films) ->
                 item {
@@ -147,7 +160,19 @@ fun Recherche(modifier: Modifier) { //page d'acceuil et de recherche de films
                 }
             }
             item {
-                Text("Genre", fontWeight = FontWeight.Bold, fontSize = 18.sp, color = Color.White)
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color(0xFFE50914), RoundedCornerShape(8.dp))
+                        .padding(horizontal = 8.dp, vertical = 6.dp)
+                ) {
+                    Text(
+                        "Genre",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 18.sp,
+                        color = Color.White
+                    )
+                }
             }
             byGenre.forEach { (genre, films) ->
                 item {
@@ -156,10 +181,21 @@ fun Recherche(modifier: Modifier) { //page d'acceuil et de recherche de films
                 }
             }
             item {
-                Text("Date", fontWeight = FontWeight.Bold, fontSize = 18.sp, color = Color.White)
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color(0xFFE50914), RoundedCornerShape(8.dp))
+                        .padding(horizontal = 8.dp, vertical = 6.dp)
+                ) {
+                    Text(
+                        "Date",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 18.sp,
+                        color = Color.White
+                    )
+                }
                 FilmCarousel(byYear, context)
             }
-
             item { Spacer(modifier = Modifier.height(16.dp)) }
         }
     }

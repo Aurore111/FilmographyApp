@@ -22,6 +22,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.SearchBar
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -87,9 +88,17 @@ class MainActivity : ComponentActivity() {
                                     icon = {
                                         Icon(
                                             imageVector = navigationItem.icon,
-                                            contentDescription = ""
+                                            contentDescription = "",
+                                            tint = Color.White
                                         )
-                                    }
+                                    },
+                                    colors = NavigationBarItemDefaults.colors(
+                                      //  selectedIconColor = Color.Black,
+                                      //  unselectedIconColor = Color.White,
+                                        selectedTextColor = Color.White,
+                                        unselectedTextColor = Color.White,
+                                        indicatorColor = Color.Black
+                                    )
                                 )
                             }
                         }

@@ -33,7 +33,7 @@ enum class NavigationItem(
     val route: String
 ){
     Home(title = "Catégories", Icons.Default.Home, route = "Home"),
-    List(title = "Films", Icons.Default.List, route = "List"),
+    List(title = "Possédés", Icons.Default.List, route = "List"),
 //    Fav(title = "Favoris", Icons.Default.Favorite, route = "Fav"),
     Search(title = "Descritions", Icons.Default.CheckCircle, route = "Search"),
     Account(title = "Compte", Icons.Default.AccountCircle, route = "Account")

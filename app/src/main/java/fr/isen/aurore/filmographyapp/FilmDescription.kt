@@ -18,6 +18,11 @@ import androidx.compose.ui.Alignment
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.auth.FirebaseAuth
 import androidx.compose.material.icons.Icons
+import fr.isen.aurore.filmographyapp.api.OmdbApi
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import coil.compose.AsyncImage
+
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -34,6 +39,7 @@ fun FilmDescription(
     var description by remember { mutableStateOf("") }
     var genre by remember { mutableStateOf("") }
     var annee by remember { mutableStateOf("") }
+    var posterUrl by remember { mutableStateOf("") }
 
     val database = FirebaseDatabase.getInstance(
         "https://filmographyapp-8fb1e-default-rtdb.europe-west1.firebasedatabase.app"
@@ -56,6 +62,17 @@ fun FilmDescription(
     val selectedStatuses = remember { mutableStateListOf<String>() }
     val owners = remember { mutableStateListOf<String>() }
     val wantToSell = remember { mutableStateListOf<String>() }
+
+    val retrofit = remember {
+        Retrofit.Builder()
+            .baseUrl("https://www.omdbapi.com/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    val api = retrofit.create(OmdbApi::class.java)
+
+    val apiKey = "2f17e6ee"
 
     LaunchedEffect(filmTitle) {
         ref.get().addOnSuccessListener { snapshot ->
@@ -105,6 +122,12 @@ fun FilmDescription(
                 }
             }
         }
+        try {
+            val movie = api.getMovie(title, apiKey)
+            posterUrl = movie.Poster
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
 
@@ -143,15 +166,13 @@ fun FilmDescription(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             item {
-                Box(
+                AsyncImage(
+                    model = posterUrl,
+                    contentDescription = title,
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(250.dp)
-                        .background(Color.LightGray),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text("Poster du film")
-                }
+                )
             }
 
             item {

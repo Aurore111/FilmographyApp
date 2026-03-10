@@ -1,45 +1,74 @@
 package fr.isen.aurore.filmographyapp
 
-import androidx.activity.ComponentActivity
+import android.content.Intent
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
+import com.google.firebase.database.FirebaseDatabase
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FilmOwn(modifier: androidx.compose.ui.Modifier)
-{
-            //en brute ------------- A modifié qui possede quoi et veut vendre. Et pouvoir cliquer sur un film et ca met la description
-    val filmsOwned = listOf(
-        mapOf("user" to "Alice", "film" to "Toy Story", "wantToSell" to "true"),
-        mapOf("user" to "Bob", "film" to "Stars Wars", "wantToSell" to "false"),
+fun FilmOwn(modifier: Modifier) {
+
+    val context = LocalContext.current
+
+    val database = FirebaseDatabase.getInstance(
+        "https://filmographyapp-8fb1e-default-rtdb.europe-west1.firebasedatabase.app"
     )
+
+    val ref = database.getReference("userFilms")
+
+    var filmsOwned by remember { mutableStateOf(listOf<Map<String, String>>()) }
+
+    LaunchedEffect(Unit) {
+
+        ref.get().addOnSuccessListener { snapshot ->
+
+            val list = mutableListOf<Map<String, String>>()
+
+            snapshot.children.forEach { user ->
+
+                val userId = user.key ?: ""
+
+                user.children.forEach { film ->
+
+                    val filmName = film.key ?: ""
+                    val status = film.value.toString()
+
+                    if (
+                        status == "Possède en DVD/Blu-Ray" ||
+                        status == "Veut s'en débarrasser"
+                    ) {
+
+                        list.add(
+                            mapOf(
+                                "user" to userId,
+                                "film" to filmName,
+                                "wantToSell" to (status == "Veut s'en débarrasser").toString()
+                            )
+                        )
+
+                    }
+
+                }
+
+            }
+
+            filmsOwned = list
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -54,6 +83,7 @@ fun FilmOwn(modifier: androidx.compose.ui.Modifier)
             )
         }
     ) { innerPadding ->
+
         LazyColumn(
             modifier = modifier
                 .fillMaxSize()
@@ -62,12 +92,25 @@ fun FilmOwn(modifier: androidx.compose.ui.Modifier)
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
+
             items(filmsOwned) { entry ->
+
                 Card(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+
+                            val intent = Intent(context, FilmDescriptionActivity::class.java)
+                            intent.putExtra("filmTitle", entry["film"])
+                            context.startActivity(intent)
+
+                        },
                     shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color.White.copy(alpha = 0.8f))
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color.White.copy(alpha = 0.8f)
+                    )
                 ) {
+
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -75,26 +118,34 @@ fun FilmOwn(modifier: androidx.compose.ui.Modifier)
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
+
                         Column {
+
                             Text(
                                 text = entry["film"] ?: "",
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 16.sp,
                                 color = Color(0xFF3E2723)
                             )
+
                             Text(
                                 text = "Possédé par : ${entry["user"]}",
                                 fontSize = 14.sp,
                                 color = Color(0xFF5D4037)
                             )
                         }
+
                         if (entry["wantToSell"] == "true") {
+
                             Text(
                                 text = "Veut vendre",
                                 fontSize = 12.sp,
                                 color = Color.White,
                                 modifier = Modifier
-                                    .background(Color(0xFF3E2723), RoundedCornerShape(8.dp))
+                                    .background(
+                                        Color(0xFF3E2723),
+                                        RoundedCornerShape(8.dp)
+                                    )
                                     .padding(horizontal = 8.dp, vertical = 4.dp)
                             )
                         }

@@ -27,6 +27,11 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.*
 import com.google.firebase.database.FirebaseDatabase
+import androidx.compose.foundation.Image
+import androidx.compose.ui.res.painterResource
+import androidx.compose.foundation.layout.Column
+import androidx.compose.ui.Alignment
+import androidx.compose.material3.TopAppBarDefaults
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -60,11 +65,14 @@ fun CategoriesScreen(modifier: Modifier) {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = Color(0xFFE50914)   // rouge
+                ),
                 title = {
                     Text(
                         text = "Univers Films",
                         fontWeight = FontWeight.ExtraBold,
-                        color = Color(0xFF3E2723)
+                        color = Color.White
                     )
                 }
             )
@@ -75,7 +83,7 @@ fun CategoriesScreen(modifier: Modifier) {
             columns = GridCells.Fixed(2),
             modifier = modifier
                 .fillMaxSize()
-                .background(Color(0xFFFCCFA4))
+                .background(Color(0xFF050505))
                 .padding(innerPadding)
                 .padding(16.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -101,12 +109,38 @@ fun CategoriesScreen(modifier: Modifier) {
                         contentColor = Color(0xFF5D4037)
                     )
                 ) {
-                    Text(
-                        text = univers,
-                        fontSize = 20.sp,
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Bold
-                    )
+
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+
+                        val logo = when (univers) {
+                            "Marvel" -> R.drawable.marvel
+                            "Star Wars" -> R.drawable.starwars
+                            "Pixar" -> R.drawable.pixar
+                            "Disney" -> R.drawable.disney
+                            "Avatar" -> R.drawable.avatar
+                            else -> null
+                        }
+
+                        logo?.let {
+                            Image(
+                                painter = painterResource(it),
+                                contentDescription = univers,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .weight(1f)
+                            )
+                        }
+
+                        Text(
+                            text = univers,
+                            fontSize = 20.sp,
+                            textAlign = TextAlign.Center,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
                 }
             }
         }

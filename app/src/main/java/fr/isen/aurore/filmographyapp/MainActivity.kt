@@ -28,6 +28,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.google.firebase.auth.FirebaseAuth
+import androidx.compose.ui.graphics.Color
 
 enum class NavigationItem(
     val title: String,
@@ -72,7 +73,10 @@ class MainActivity : ComponentActivity() {
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
                     bottomBar = {
-                        NavigationBar {
+                        NavigationBar (
+                                containerColor = Color(0xFFE50914)
+                        )
+                        {
                             NavigationItem.entries.forEach { navigationItem ->
                                 NavigationBarItem(
                                     selected = currentItem.value == navigationItem,

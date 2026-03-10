@@ -66,7 +66,7 @@ fun CategoriesScreen(modifier: Modifier) {
         topBar = {
             CenterAlignedTopAppBar(
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = Color(0xFFE50914)   // rouge
+                    containerColor = Color(0xFFE50914)
                 ),
                 title = {
                     Text(

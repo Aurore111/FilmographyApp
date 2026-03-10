@@ -35,7 +35,7 @@ fun Connexion(modifier: Modifier) {
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(Color(0xFFFCCFA4))
+            .background(Color(0xFF050505))
             .padding(24.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally

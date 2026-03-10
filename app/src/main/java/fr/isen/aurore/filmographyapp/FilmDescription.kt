@@ -133,6 +133,8 @@ fun FilmDescription(
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = Color(0xFFE50914)),
                 title = {
                     Text(
                         text = title,
@@ -158,7 +160,7 @@ fun FilmDescription(
         LazyColumn(
             modifier = modifier
                 .fillMaxSize()
-                .background(Color(0xFFFCCFA4))
+                .background(Color(0xFF050505))
                 .padding(innerPadding)
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)

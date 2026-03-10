@@ -39,7 +39,7 @@ enum class NavigationItem(
 ){
     CheckCircle(title = "Descritions", Icons.Default.CheckCircle, route = "CheckCircle"),
     Home(title = "Catégories", Icons.Default.List, route = "Home"),
-    Search(title = "Search", Icons.Default.Home, route = "Search"), //icone home car c'est la page d'acceuil mais le fichier s appelle rechercher
+    Search(title = "Home", Icons.Default.Home, route = "Search"), //icone home car c'est la page d'acceuil mais le fichier s appelle rechercher
     List(title = "Possédés", Icons.Default.Create, route = "List"),
     Account(title = "Compte", Icons.Default.AccountCircle, route = "Account")
 }

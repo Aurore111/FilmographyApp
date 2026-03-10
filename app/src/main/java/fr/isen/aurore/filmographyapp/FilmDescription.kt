@@ -219,17 +219,15 @@ fun FilmDescription(
                                         val filmKey = title.replace(".", "")
                                         if (checked) {
                                             // "Veut s'en débarrasser" coche automatiquement "Possède en DVD Blu-Ray"
-                                            if (status == "Veut s'en débarrasser") {
+                                            if (status == "Veut s'en débarrasser" && !selectedStatuses.contains("Possède en DVD Blu-Ray")) {
                                                 selectedStatuses.add("Possède en DVD Blu-Ray")
                                                 userRef.child(filmKey).child("own").setValue("Possède en DVD Blu-Ray")
                                             }
-                                            if (status == "Possède en DVD Blu-Ray") {
-                                                userRef.child(filmKey).child("own").setValue("Possède en DVD Blu-Ray")
-                                            }
                                             selectedStatuses.add(status)
-                                            if (status == "Veut s'en débarrasser") {
-                                                userRef.child(filmKey).child("sell").setValue(status)
-                                            }
+                                            userRef.child(filmKey).child(
+                                                if (status == "Possède en DVD Blu-Ray") "own" else "sell"
+                                            ).setValue(status)
+
                                         }  else {
                                             selectedStatuses.remove(status)
                                             if (status == "Possède en DVD Blu-Ray") {

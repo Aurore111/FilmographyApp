@@ -72,8 +72,7 @@ fun FilmDescription(modifier: Modifier, filmTitle: String?, showBackButton: Bool
         userRef.child(filmKey).get().addOnSuccessListener { snapshot ->
             selectedStatuses.clear()
             snapshot.children.forEach { statusSnap ->
-                selectedStatuses.add(statusSnap.key ?: "")
-            }
+                statusSnap.value?.toString()?.let { selectedStatuses.add(it) }            }
         }
     }
 
@@ -202,7 +201,9 @@ fun FilmDescription(modifier: Modifier, filmTitle: String?, showBackButton: Bool
                                         } else {
                                             selectedStatuses.remove(status)
                                         }
-                                        val map = selectedStatuses.associateWith { true }
+                                        val map = selectedStatuses.toList()
+                                            .mapIndexed { index, value -> index.toString() to value }
+                                            .toMap()
                                         userRef.child(filmKey).setValue(map)
                                     }
                                 )

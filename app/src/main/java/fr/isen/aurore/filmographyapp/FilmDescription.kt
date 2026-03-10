@@ -71,7 +71,24 @@ fun FilmDescription(modifier: Modifier, filmTitle: String?, showBackButton: Bool
     }
 
     val statuses = listOf("Vu", "À voir", "Possède en DVD/Blu-Ray", "Veut s'en débarrasser")
-    var selectedStatuses = remember { mutableStateListOf<String?>() }
+    var selectedStatuses = remember { mutableStateListOf<String>() }
+
+    LaunchedEffect(title) {
+
+        val filmKey = title.replace(".", "")
+
+        userRef.child(filmKey).get().addOnSuccessListener { snapshot ->
+
+            val savedStatus = snapshot.value?.toString()
+
+            if (savedStatus != null) {
+                selectedStatuses.clear()
+                selectedStatuses.add(savedStatus)
+            }
+
+        }
+
+    }
 
     val owners = listOf("Alice", "Bob", "Charlie")
     val wantToSell = listOf("Bob")

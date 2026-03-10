@@ -16,6 +16,7 @@ import android.util.Log
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Search
@@ -36,12 +37,11 @@ enum class NavigationItem(
     val icon: ImageVector,
     val route: String
 ){
-    Home(title = "Catégories", Icons.Default.Home, route = "Home"),
-    List(title = "Possédés", Icons.Default.List, route = "List"),
-//    Fav(title = "Favoris", Icons.Default.Favorite, route = "Fav"),
     CheckCircle(title = "Descritions", Icons.Default.CheckCircle, route = "CheckCircle"),
-    Account(title = "Compte", Icons.Default.AccountCircle, route = "Account"),
-    Search(title = "Search", Icons.Default.Search, route = "Search")
+    Home(title = "Catégories", Icons.Default.List, route = "Home"),
+    Search(title = "Search", Icons.Default.Home, route = "Search"), //icone home car c'est la page d'acceuil mais le fichier s appelle rechercher
+    List(title = "Possédés", Icons.Default.Create, route = "List"),
+    Account(title = "Compte", Icons.Default.AccountCircle, route = "Account")
 }
 
 class MainActivity : ComponentActivity() {

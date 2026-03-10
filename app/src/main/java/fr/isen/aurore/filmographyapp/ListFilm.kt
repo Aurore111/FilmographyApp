@@ -68,7 +68,8 @@ fun ListFilm(modifier: Modifier, categoryName: String?) {
 
         topBar = {
             CenterAlignedTopAppBar(
-
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = Color(0xFFE50914)),
                 title = {
                     Text(
                         text = categoryName ?: "Films",
@@ -94,7 +95,7 @@ fun ListFilm(modifier: Modifier, categoryName: String?) {
 
             modifier = modifier
                 .fillMaxSize()
-                .background(Color(0xFFFCCFA4))
+                .background(Color(0xFF050505))
                 .padding(innerPadding)
                 .padding(16.dp),
 

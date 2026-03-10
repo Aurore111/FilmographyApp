@@ -101,7 +101,7 @@ fun FilmOwn(modifier: Modifier) {
                         .clickable {
 
                             val intent = Intent(context, FilmDescriptionActivity::class.java)
-                            intent.putExtra("filmTitle", entry["film"])
+                            intent.putExtra("Film", entry["film"])
                             context.startActivity(intent)
 
                         },

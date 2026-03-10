@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -43,15 +44,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import com.google.firebase.database.FirebaseDatabase
+import fr.isen.aurore.filmographyapp.api.OmdbApi
+import coil.compose.AsyncImage  //Ne Pas Oublier dans buil.gradle.kts ( le 2e) de synch et de mettre les 3 implementation !!!
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Recherche(modifier: Modifier) {
+fun Recherche(modifier: Modifier) { //page d'acceuil et de recherche de films
     val context = LocalContext.current
     var searchQuery by remember { mutableStateOf("") }
 
@@ -156,14 +163,29 @@ fun Recherche(modifier: Modifier) {
 }
 
 
-@Composable   //Caourel de ma page d'acceuil
-fun FilmCarousel(films: List<Map<String, String>>, context: android.content.Context)
-{
+@Composable   //Carousel de ma page d'acceuil
+fun FilmCarousel(films: List<Map<String, String>>, context: android.content.Context) {
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         contentPadding = PaddingValues(vertical = 8.dp)
     ) {
         items(films) { film ->
+            var posterUrl by remember { mutableStateOf("") }//pour les images de mes films
+
+            LaunchedEffect(film["title"]) {
+                try {
+                    val retrofit = Retrofit.Builder()
+                        .baseUrl("https://www.omdbapi.com/")
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build()
+                    val api = retrofit.create(OmdbApi::class.java)
+                    val movie = api.getMovie(film["title"] ?: "", "2f17e6ee")
+                    posterUrl = movie.Poster
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+
             Card(
                 modifier = Modifier
                     .width(130.dp)
@@ -177,36 +199,41 @@ fun FilmCarousel(films: List<Map<String, String>>, context: android.content.Cont
                 colors = CardDefaults.cardColors(containerColor = Color.White)
             ) {
                 Column {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(140.dp)
-                            .background(Color(0xFFD7CCC8)),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = film["universe"] ?: "",
-                            fontSize = 11.sp,
-                            color = Color(0xFF5D4037),
-                            fontWeight = FontWeight.Bold,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.padding(4.dp)
+                    if (posterUrl.isNotEmpty()) {
+                        AsyncImage(
+                            model = posterUrl,
+                            contentDescription = film["title"],
+                            modifier = Modifier.fillMaxWidth().height(160.dp),
+                            contentScale = ContentScale.Crop
                         )
-                    }
-                    Column(modifier = Modifier.padding(8.dp)) {
-                        Text(
-                            text = film["title"] ?: "",
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 12.sp,
-                            color = Color(0xFF3E2723),
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                        Text(
-                            text = film["year"] ?: "",
-                            fontSize = 11.sp,
-                            color = Color(0xFF8D6E63)
-                        )
+                    } else {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(140.dp)
+                                .background(Color(0xFFD7CCC8)),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator(
+                                color = Color(0xFF3E2723),
+                                modifier = Modifier.size(24.dp)
+                            )
+                        }
+                        Column(modifier = Modifier.padding(8.dp)) {
+                            Text(
+                                text = film["title"] ?: "",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 12.sp,
+                                color = Color(0xFF3E2723),
+                                maxLines = 2,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                            Text(
+                                text = film["year"] ?: "",
+                                fontSize = 11.sp,
+                                color = Color(0xFF8D6E63)
+                            )
+                        }
                     }
                 }
             }

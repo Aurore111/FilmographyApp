@@ -23,8 +23,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import coil.compose.AsyncImage
 
-
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FilmDescription(

@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.Alignment
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.auth.FirebaseAuth
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -33,6 +34,12 @@ fun FilmDescription(modifier: Modifier, filmTitle: String?, showBackButton: Bool
     val database = FirebaseDatabase.getInstance(
         "https://filmographyapp-8fb1e-default-rtdb.europe-west1.firebasedatabase.app"
     )
+
+    val auth = FirebaseAuth.getInstance()
+    val userId = auth.currentUser?.uid ?: return
+
+    val userRef = database.getReference("userFilms").child(userId)
+
 
     val ref = database.getReference("categories")
 
@@ -199,18 +206,24 @@ fun FilmDescription(modifier: Modifier, filmTitle: String?, showBackButton: Bool
 
                                 Checkbox(
                                     checked = selectedStatuses.contains(status),
-                                    onCheckedChange = {
+                                    onCheckedChange = { checked ->
 
-                                        if (it) {
+                                        val filmKey = filmTitle?.replace(".", "") ?: return@Checkbox
+
+                                        if (checked) {
 
                                             if (status == "Vu") selectedStatuses.remove("À voir")
                                             if (status == "À voir") selectedStatuses.remove("Vu")
 
                                             selectedStatuses.add(status)
 
+                                            userRef.child(filmKey).setValue(status)
+
                                         } else {
 
                                             selectedStatuses.remove(status)
+
+                                            userRef.child(filmKey).removeValue()
 
                                         }
 

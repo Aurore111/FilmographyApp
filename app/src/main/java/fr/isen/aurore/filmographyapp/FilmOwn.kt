@@ -73,11 +73,13 @@ fun FilmOwn(modifier: Modifier) {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = Color(0xFFE50914)),
                 title = {
                     Text(
                         text = "Films possédés",
                         fontWeight = FontWeight.ExtraBold,
-                        color = Color(0xFF3E2723)
+                        color = Color.White
                     )
                 }
             )
@@ -87,7 +89,7 @@ fun FilmOwn(modifier: Modifier) {
         LazyColumn(
             modifier = modifier
                 .fillMaxSize()
-                .background(Color(0xFFFCCFA4))
+                .background(Color(0xFF050505))
                 .padding(innerPadding)
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)

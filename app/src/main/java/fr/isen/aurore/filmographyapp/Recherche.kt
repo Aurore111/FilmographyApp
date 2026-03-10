@@ -45,6 +45,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.layout.ContentScale
@@ -96,11 +97,13 @@ fun Recherche(modifier: Modifier) { //page d'acceuil et de recherche de films
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = Color(0xFFE50914)),
                 title = {
                     Text(
                         text = "Recherche",
                         fontWeight = FontWeight.ExtraBold,
-                        color = Color(0xFF3E2723)
+                        color = Color.White
                     )
                 }
             )
@@ -109,7 +112,7 @@ fun Recherche(modifier: Modifier) { //page d'acceuil et de recherche de films
         LazyColumn(
             modifier = modifier
                 .fillMaxSize()
-                .background(Color(0xFFFCCFA4))
+                .background(Color(0xFF050505))
                 .padding(innerPadding)
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -135,25 +138,25 @@ fun Recherche(modifier: Modifier) { //page d'acceuil et de recherche de films
                 )
             }
             item {
-                Text("Univers", fontWeight = FontWeight.Bold, fontSize = 18.sp, color = Color(0xFF3E2723))
+                Text("Univers", fontWeight = FontWeight.Bold, fontSize = 18.sp, color = Color.White)
             }
             byUniverse.forEach { (universe, films) ->
                 item {
-                    Text(universe, fontWeight = FontWeight.SemiBold, fontSize = 15.sp, color = Color(0xFF5D4037))
+                    Text(universe, fontWeight = FontWeight.SemiBold, fontSize = 15.sp, color = Color.White)
                     FilmCarousel(films, context)
                 }
             }
             item {
-                Text("Genre", fontWeight = FontWeight.Bold, fontSize = 18.sp, color = Color(0xFF3E2723))
+                Text("Genre", fontWeight = FontWeight.Bold, fontSize = 18.sp, color = Color.White)
             }
             byGenre.forEach { (genre, films) ->
                 item {
-                    Text(genre, fontWeight = FontWeight.SemiBold, fontSize = 15.sp, color = Color(0xFF5D4037))
+                    Text(genre, fontWeight = FontWeight.SemiBold, fontSize = 15.sp, color = Color.White)
                     FilmCarousel(films, context)
                 }
             }
             item {
-                Text("Date", fontWeight = FontWeight.Bold, fontSize = 18.sp, color = Color(0xFF3E2723))
+                Text("Date", fontWeight = FontWeight.Bold, fontSize = 18.sp, color = Color.White)
                 FilmCarousel(byYear, context)
             }
 

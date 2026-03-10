@@ -12,6 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FilmographyApp">
         <activity
+            android:name=".RechercheActivity"
+            android:exported="false"
+            android:label="@string/title_activity_recherche"
+            android:theme="@style/Theme.FilmographyApp" />
+        <activity
             android:name=".FilmOwnActivity"
             android:exported="false"
             android:label="@string/title_activity_film_own"

@@ -98,7 +98,7 @@ class MainActivity : ComponentActivity() {
                             filmTitle = "Toy Story",
                             showBackButton = false
                         )
-                        NavigationItem.Search -> { }
+                        NavigationItem.Search -> Recherche(Modifier.padding(innerPadding))
                         NavigationItem.Account -> Compte(Modifier.padding(innerPadding))
                         NavigationItem.List -> FilmOwn(Modifier.padding(innerPadding))
                     }

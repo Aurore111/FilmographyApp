@@ -37,17 +37,11 @@ fun FilmOwn(modifier: Modifier) {
 
         ref.get().addOnSuccessListener { snapshot ->
 
-            val list = mutableListOf<Map<String, String>>()
+            val list = mutableListOf<Map<String,String>>()
 
             snapshot.children.forEach { user ->
 
                 val userId = user.key ?: ""
-
-                val username = if (userId == FirebaseAuth.getInstance().currentUser?.uid) {
-                    FirebaseAuth.getInstance().currentUser?.displayName ?: userId
-                } else {
-                    userId
-                }
 
                 user.children.forEach { film ->
 
@@ -59,22 +53,32 @@ fun FilmOwn(modifier: Modifier) {
                         status == "Veut s'en débarrasser"
                     ) {
 
-                        list.add(
-                            mapOf(
-                                "user" to username,
-                                "film" to filmName,
-                                "wantToSell" to (status == "Veut s'en débarrasser").toString()
-                            )
-                        )
+                        database.getReference("users")
+                            .child(userId)
+                            .child("username")
+                            .get()
+                            .addOnSuccessListener { nameSnap ->
 
+                                val username = nameSnap.value?.toString() ?: userId
+
+                                list.add(
+                                    mapOf(
+                                        "user" to username,
+                                        "film" to filmName,
+                                        "wantToSell" to (status == "Veut s'en débarrasser").toString()
+                                    )
+                                )
+
+                                filmsOwned = list
+                            }
                     }
 
                 }
 
             }
 
-            filmsOwned = list
         }
+
     }
 
     Scaffold(

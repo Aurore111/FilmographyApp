@@ -17,6 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.auth.FirebaseAuth
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,6 +43,12 @@ fun FilmOwn(modifier: Modifier) {
 
                 val userId = user.key ?: ""
 
+                val username = if (userId == FirebaseAuth.getInstance().currentUser?.uid) {
+                    FirebaseAuth.getInstance().currentUser?.displayName ?: userId
+                } else {
+                    userId
+                }
+
                 user.children.forEach { film ->
 
                     val filmName = film.key ?: ""
@@ -54,7 +61,7 @@ fun FilmOwn(modifier: Modifier) {
 
                         list.add(
                             mapOf(
-                                "user" to userId,
+                                "user" to username,
                                 "film" to filmName,
                                 "wantToSell" to (status == "Veut s'en débarrasser").toString()
                             )

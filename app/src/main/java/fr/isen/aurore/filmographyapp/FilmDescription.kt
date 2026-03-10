@@ -50,12 +50,9 @@ fun FilmDescription(
         "Possède en DVD/Blu-Ray",
         "Veut s'en débarrasser"
     )
-
     val selectedStatuses = remember { mutableStateListOf<String>() }
     val owners = listOf("Alice", "Bob", "Charlie")
     val wantToSell = listOf("Bob")
-
-
 
     LaunchedEffect(filmTitle) {
         ref.get().addOnSuccessListener { snapshot ->
@@ -75,8 +72,6 @@ fun FilmDescription(
         }
     }
 
-
-
     LaunchedEffect(title) {
         val filmKey = title.replace(".", "")
         userRef.child(filmKey).get().addOnSuccessListener { snapshot ->
@@ -87,8 +82,6 @@ fun FilmDescription(
             }
         }
     }
-
-
 
     Scaffold(
         topBar = {

@@ -37,10 +37,7 @@ fun FilmDescription(modifier: Modifier, filmTitle: String?, showBackButton: Bool
 
     val auth = FirebaseAuth.getInstance()
     val userId = auth.currentUser?.uid ?: return
-
     val userRef = database.getReference("userFilms").child(userId)
-
-
     val ref = database.getReference("categories")
 
     LaunchedEffect(filmTitle) {
@@ -65,34 +62,23 @@ fun FilmDescription(modifier: Modifier, filmTitle: String?, showBackButton: Bool
                     }
                 }
             }
-
         }
-
     }
 
-    val statuses = listOf("Vu", "À voir", "Possède en DVD/Blu-Ray", "Veut s'en débarrasser")
+    val statuses = listOf("Vu", "À voir", "Possède en DVD Blu-Ray", "Veut s'en débarrasser")
     var selectedStatuses = remember { mutableStateListOf<String>() }
-
     LaunchedEffect(title) {
-
         val filmKey = title.replace(".", "")
-
         userRef.child(filmKey).get().addOnSuccessListener { snapshot ->
-
-            val savedStatus = snapshot.value?.toString()
-
-            if (savedStatus != null) {
-                selectedStatuses.clear()
-                selectedStatuses.add(savedStatus)
+            selectedStatuses.clear()
+            snapshot.children.forEach { statusSnap ->
+                selectedStatuses.add(statusSnap.key ?: "")
             }
-
         }
-
     }
 
     val owners = listOf("Alice", "Bob", "Charlie")
     val wantToSell = listOf("Bob")
-
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -115,7 +101,6 @@ fun FilmDescription(modifier: Modifier, filmTitle: String?, showBackButton: Bool
             )
         }
     ) { innerPadding ->
-
         LazyColumn(
             modifier = modifier
                 .fillMaxSize()
@@ -124,8 +109,7 @@ fun FilmDescription(modifier: Modifier, filmTitle: String?, showBackButton: Bool
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-
-            // Poster du film
+            // Poster du film ---------------------------------------------
             item {
 
                 Box(
@@ -137,12 +121,10 @@ fun FilmDescription(modifier: Modifier, filmTitle: String?, showBackButton: Bool
                 ) {
                     Text("Poster du film")
                 }
-
             }
 
-            // Card infos film
+            // Card infos film brute----------------------------------------
             item {
-
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(16.dp),
@@ -150,48 +132,38 @@ fun FilmDescription(modifier: Modifier, filmTitle: String?, showBackButton: Bool
                         containerColor = Color.White.copy(alpha = 0.8f)
                     )
                 ) {
-
                     Column(
                         modifier = Modifier.padding(16.dp),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-
                         Text(
                             text = title,
                             fontWeight = FontWeight.ExtraBold,
                             fontSize = 20.sp,
                             color = Color(0xFF3E2723)
                         )
-
                         Text(
                             text = "Genre : $genre",
                             fontSize = 16.sp,
                             color = Color(0xFF5D4037)
                         )
-
                         Text(
                             text = "Année : $annee",
                             fontSize = 16.sp,
                             color = Color(0xFF5D4037)
                         )
-
                         Spacer(modifier = Modifier.height(4.dp))
-
                         Text(
                             text = description,
                             fontSize = 16.sp,
                             color = Color(0xFF4E342E)
                         )
-
                     }
-
                 }
-
             }
 
             // Card statut utilisateur
             item {
-
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(16.dp),
@@ -199,73 +171,54 @@ fun FilmDescription(modifier: Modifier, filmTitle: String?, showBackButton: Bool
                         containerColor = Color.White.copy(alpha = 0.8f)
                     )
                 ) {
-
                     Column(
                         modifier = Modifier.padding(16.dp),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-
                         Text(
                             "Mon statut",
                             fontWeight = FontWeight.Bold,
                             fontSize = 16.sp,
                             color = Color(0xFF3E2723)
                         )
-
                         statuses.forEach { status ->
-
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(vertical = 4.dp)
                             ) {
-
                                 Checkbox(
                                     checked = selectedStatuses.contains(status),
                                     onCheckedChange = { checked ->
-
                                         val filmKey = filmTitle?.replace(".", "") ?: return@Checkbox
-
                                         if (checked) {
-
                                             if (status == "Vu") selectedStatuses.remove("À voir")
                                             if (status == "À voir") selectedStatuses.remove("Vu")
-
+                                            if (status == "Veut s'en débarrasser" && !selectedStatuses.contains("Possède en DVD Blu-Ray")) {
+                                                selectedStatuses.add("Possède en DVD Blu-Ray")
+                                            }
                                             selectedStatuses.add(status)
-
-                                            userRef.child(filmKey).setValue(status)
-
                                         } else {
-
                                             selectedStatuses.remove(status)
-
-                                            userRef.child(filmKey).removeValue()
-
                                         }
-
+                                        val map = selectedStatuses.associateWith { true }
+                                        userRef.child(filmKey).setValue(map)
                                     }
                                 )
-
                                 Text(
                                     text = status,
                                     fontSize = 16.sp,
                                     color = Color(0xFF5D4037)
                                 )
-
                             }
-
                         }
-
                     }
-
                 }
-
             }
 
             // Card utilisateurs
             item {
-
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(16.dp),
@@ -273,26 +226,22 @@ fun FilmDescription(modifier: Modifier, filmTitle: String?, showBackButton: Bool
                         containerColor = Color.White.copy(alpha = 0.8f)
                     )
                 ) {
-
                     Column(
                         modifier = Modifier.padding(16.dp),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-
                         Text(
                             "Utilisateurs",
                             fontWeight = FontWeight.Bold,
                             fontSize = 16.sp,
                             color = Color(0xFF3E2723)
                         )
-
                         Text(
                             "Possèdent ce film :",
                             fontWeight = FontWeight.SemiBold,
                             fontSize = 14.sp,
                             color = Color(0xFF5D4037)
                         )
-
                         owners.forEach { user ->
                             Text(
                                 "• $user",
@@ -300,16 +249,13 @@ fun FilmDescription(modifier: Modifier, filmTitle: String?, showBackButton: Bool
                                 color = Color(0xFF4E342E)
                             )
                         }
-
                         Spacer(modifier = Modifier.height(4.dp))
-
                         Text(
                             "Veulent s'en débarrasser :",
                             fontWeight = FontWeight.SemiBold,
                             fontSize = 14.sp,
                             color = Color(0xFF5D4037)
                         )
-
                         wantToSell.forEach { user ->
                             Text(
                                 "• $user",
@@ -317,15 +263,10 @@ fun FilmDescription(modifier: Modifier, filmTitle: String?, showBackButton: Bool
                                 color = Color(0xFF4E342E)
                             )
                         }
-
                     }
-
                 }
-
             }
-
         }
-
     }
-
 }
+

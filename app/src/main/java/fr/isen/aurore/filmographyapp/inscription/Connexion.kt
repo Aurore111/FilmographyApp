@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
 import fr.isen.aurore.filmographyapp.MainActivity
 
 @Composable
@@ -39,6 +40,7 @@ fun Connexion(modifier: Modifier) {
     val context = LocalContext.current
 
     var email by remember { mutableStateOf("") }
+    var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var isLogin by remember { mutableStateOf(true) } // true = connexion, false = inscription
 
@@ -65,6 +67,19 @@ fun Connexion(modifier: Modifier) {
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(12.dp)
         )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        if (!isLogin) {
+            Spacer(modifier = Modifier.height(12.dp))
+            OutlinedTextField(
+                value = username,
+                onValueChange = { username = it },
+                label = { Text("Nom d'utilisateur") },
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp)
+            )
+        }
 
         Spacer(modifier = Modifier.height(12.dp))
 
@@ -98,6 +113,11 @@ fun Connexion(modifier: Modifier) {
                     // inscription
                     auth.createUserWithEmailAndPassword(email, password)
                         .addOnSuccessListener {
+                            val profileUpdate = UserProfileChangeRequest.Builder()
+                                .setDisplayName(username)
+                                .build()
+                            it.user?.updateProfile(profileUpdate)
+
                             Log.d("AUTH", "Inscription réussie")
                             context.startActivity(Intent(context, MainActivity::class.java))
                             (context as? ComponentActivity)?.finish()

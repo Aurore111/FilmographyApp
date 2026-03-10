@@ -15,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.firebase.auth.FirebaseAuth
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Compte(modifier: Modifier)
 {
@@ -51,7 +53,7 @@ fun Compte(modifier: Modifier)
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = user?.email ?: "Non connecté",
+            text = user?.displayName ?: user?.email ?: "Non connecté",
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             color = Color(0xFF3E2723)

@@ -69,16 +69,13 @@ fun FilmOwn(modifier: Modifier) {
                                     )
                                 )
 
-                                filmsOwned = list
+                                // IMPORTANT : copie de la liste
+                                filmsOwned = list.toList()
                             }
                     }
-
                 }
-
             }
-
         }
-
     }
 
     Scaffold(

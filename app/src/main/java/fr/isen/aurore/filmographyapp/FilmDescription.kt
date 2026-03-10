@@ -139,7 +139,7 @@ fun FilmDescription(
                     Text(
                         text = title,
                         fontWeight = FontWeight.ExtraBold,
-                        color = Color(0xFF3E2723)
+                        color = Color.White
                     )
                 },
                 navigationIcon = {

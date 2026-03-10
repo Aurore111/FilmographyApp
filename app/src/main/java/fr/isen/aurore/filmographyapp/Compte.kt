@@ -56,9 +56,10 @@ fun Compte(modifier: Modifier) {
         database.getReference("userFilms").child(userId)
             .get().addOnSuccessListener { snapshot ->
                 ownedFilms.clear()
-                snapshot.children.forEach { film ->
-                    if (film.value.toString() == "Possède en DVD/Blu-Ray") {
-                        ownedFilms.add(film.key ?: "")
+                snapshot.children.forEach { filmSnap ->
+                    val own = filmSnap.child("own").value?.toString()
+                    if (own == "Possède en DVD Blu-Ray") {
+                        ownedFilms.add(filmSnap.key ?: "")
                     }
                 }
             }

@@ -50,9 +50,12 @@ fun FilmDescription(
         "Possède en DVD/Blu-Ray",
         "Veut s'en débarrasser"
     )
+    val watchStatuses = listOf("Vu", "À voir")
+    val ownStatuses = listOf("Possède en DVD Blu-Ray", "Veut s'en débarrasser")
+
     val selectedStatuses = remember { mutableStateListOf<String>() }
-    val owners = listOf("Alice", "Bob", "Charlie")
-    val wantToSell = listOf("Bob")
+    val owners = remember { mutableStateListOf<String>() }
+    val wantToSell = remember { mutableStateListOf<String>() }
 
     LaunchedEffect(filmTitle) {
         ref.get().addOnSuccessListener { snapshot ->
@@ -72,16 +75,39 @@ fun FilmDescription(
         }
     }
 
-    LaunchedEffect(title) {
+    LaunchedEffect(title) {    //partie Mon status dans page description film
+        if (title.isEmpty()) return@LaunchedEffect
         val filmKey = title.replace(".", "")
+
         userRef.child(filmKey).get().addOnSuccessListener { snapshot ->
-            val savedStatus = snapshot.value?.toString()
-            if (savedStatus != null) {
-                selectedStatuses.clear()
-                selectedStatuses.add(savedStatus)
+            selectedStatuses.clear()
+            snapshot.child("watch").value?.toString()?.let { selectedStatuses.add(it) }
+            snapshot.child("own").value?.toString()?.let { selectedStatuses.add(it) }
+            snapshot.child("sell").value?.toString()?.let { selectedStatuses.add(it) }
+        }
+        //partie Utilisateurs dans page description film
+        owners.clear()
+        wantToSell.clear()
+        database.getReference("userFilms").get().addOnSuccessListener { snapshot ->
+            snapshot.children.forEach { userSnap ->
+                val uid = userSnap.key ?: ""
+                val film = userSnap.child(filmKey)
+                val own = film.child("own").value?.toString()
+                val sell = film.child("sell").value?.toString()
+
+                if (own == "Possède en DVD Blu-Ray" || sell == "Veut s'en débarrasser") {
+                    database.getReference("users").child(uid).child("username")
+                        .get().addOnSuccessListener { nameSnap ->
+                            val username = nameSnap.value?.toString() ?: uid
+                            if (own == "Possède en DVD Blu-Ray") owners.add(username)
+                            if (sell == "Veut s'en débarrasser") wantToSell.add(username)
+                        }
+                }
             }
         }
     }
+
+
 
     Scaffold(
         topBar = {
@@ -184,32 +210,60 @@ fun FilmDescription(
                             fontSize = 16.sp,
                             color = Color(0xFF3E2723)
                         )
-                        statuses.forEach { status ->
+                        Text("Statut de visionnage", fontWeight = FontWeight.SemiBold, fontSize = 14.sp, color = Color(0xFF3E2723))
+                        watchStatuses.forEach { status ->
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(vertical = 4.dp)
+                            ) { RadioButton(
+                                selected = selectedStatuses.contains(status),
+                                onClick = {
+                                    val filmKey = title.replace(".", "")
+                                    watchStatuses.forEach { selectedStatuses.remove(it) }
+                                    selectedStatuses.add(status)
+                                    userRef.child(filmKey).child("watch").setValue(status)
+                                    }
+                                )
+                                Text(text = status, fontSize = 16.sp, color = Color(0xFF5D4037))
+                            }
+                        }
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        Text("Possession", fontWeight = FontWeight.SemiBold, fontSize = 14.sp, color = Color(0xFF3E2723))
+                        ownStatuses.forEach { status ->
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)
                             ) {
                                 Checkbox(
                                     checked = selectedStatuses.contains(status),
                                     onCheckedChange = { checked ->
                                         val filmKey = title.replace(".", "")
                                         if (checked) {
-                                            selectedStatuses.clear()
+                                            // "Veut s'en débarrasser" coche automatiquement "Possède en DVD Blu-Ray"
+                                            if (status == "Veut s'en débarrasser" && !selectedStatuses.contains("Possède en DVD Blu-Ray")) {
+                                                selectedStatuses.add("Possède en DVD Blu-Ray")
+                                                userRef.child(filmKey).child("own").setValue("Possède en DVD Blu-Ray")
+                                            }
                                             selectedStatuses.add(status)
-                                            userRef.child(filmKey).setValue(status)
-                                        } else {
+                                            userRef.child(filmKey).child(
+                                                if (status == "Possède en DVD Blu-Ray") "own" else "sell"
+                                            ).setValue(status)
+
+                                        }  else {
                                             selectedStatuses.remove(status)
-                                            userRef.child(filmKey).removeValue()
+                                            if (status == "Possède en DVD Blu-Ray") {
+                                                userRef.child(filmKey).child("own").removeValue()
+                                            }
+                                            if (status == "Veut s'en débarrasser") {
+                                                userRef.child(filmKey).child("sell").removeValue()
+                                            }
                                         }
                                     }
                                 )
-                                Text(
-                                    text = status,
-                                    fontSize = 16.sp,
-                                    color = Color(0xFF5D4037)
-                                )
+                                Text(text = status, fontSize = 16.sp, color = Color(0xFF5D4037))
                             }
                         }
                     }

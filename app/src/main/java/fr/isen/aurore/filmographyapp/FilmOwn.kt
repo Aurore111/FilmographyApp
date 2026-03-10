@@ -22,7 +22,6 @@ import com.google.firebase.auth.FirebaseAuth
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FilmOwn(modifier: Modifier) {
-
     val context = LocalContext.current
 
     val database = FirebaseDatabase.getInstance(
@@ -30,47 +29,40 @@ fun FilmOwn(modifier: Modifier) {
     )
 
     val ref = database.getReference("userFilms")
-
     var filmsOwned by remember { mutableStateOf(listOf<Map<String, String>>()) }
 
     LaunchedEffect(Unit) {
-
         ref.get().addOnSuccessListener { snapshot ->
-
             val list = mutableListOf<Map<String,String>>()
+            val users = snapshot.children.toList()
+            var pending = 0
 
             snapshot.children.forEach { user ->
-
                 val userId = user.key ?: ""
 
                 user.children.forEach { film ->
-
                     val filmName = film.key ?: ""
-                    val status = film.value.toString()
+                    val own = film.child("own").value?.toString()
+                    val sell = film.child("sell").value?.toString()
 
-                    if (
-                        status == "Possède en DVD/Blu-Ray" ||
-                        status == "Veut s'en débarrasser"
-                    ) {
-
+                    if (own == "Possède en DVD Blu-Ray" || sell == "Veut s'en débarrasser")
+                    {
+                        pending++
                         database.getReference("users")
                             .child(userId)
                             .child("username")
                             .get()
                             .addOnSuccessListener { nameSnap ->
-
                                 val username = nameSnap.value?.toString() ?: userId
-
                                 list.add(
                                     mapOf(
                                         "user" to username,
                                         "film" to filmName,
-                                        "wantToSell" to (status == "Veut s'en débarrasser").toString()
+                                        "wantToSell" to (sell == "Veut s'en débarrasser").toString()
                                     )
                                 )
-
-                                // IMPORTANT : copie de la liste
-                                filmsOwned = list.toList()
+                                pending--
+                                if (pending ==0) filmsOwned = list.toList()    // copie de la liste
                             }
                     }
                 }

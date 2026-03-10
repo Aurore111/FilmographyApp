@@ -32,10 +32,10 @@ enum class NavigationItem(
     val icon: ImageVector,
     val route: String
 ){
-    Home(title = "Catégories Films", Icons.Default.Home, route = "Home"),
-    List(title = "Films Own", Icons.Default.List, route = "List"),
+    Home(title = "Catégories", Icons.Default.Home, route = "Home"),
+    List(title = "Possédés", Icons.Default.List, route = "List"),
 //    Fav(title = "Favoris", Icons.Default.Favorite, route = "Fav"),
-    Search(title = "Descritions Films", Icons.Default.CheckCircle, route = "Search"),
+    Search(title = "Descritions", Icons.Default.CheckCircle, route = "Search"),
     Account(title = "Compte", Icons.Default.AccountCircle, route = "Account")
 
 }

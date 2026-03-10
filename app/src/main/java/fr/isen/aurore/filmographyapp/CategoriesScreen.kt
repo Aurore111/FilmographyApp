@@ -33,11 +33,14 @@ import androidx.compose.material3.IconButton
 import androidx.compose.runtime.*
 import com.google.firebase.database.FirebaseDatabase
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoriesScreen(modifier: Modifier) {
+
     val context = LocalContext.current
-    //  On remplace le brute avec l'appel API
+
+    // On remplace le brute avec l'appel API
     var franchises by remember { mutableStateOf(listOf<String>()) }
 
     LaunchedEffect(Unit) {
@@ -59,7 +62,7 @@ fun CategoriesScreen(modifier: Modifier) {
         }
     }
 
-    Scaffold (
+    Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
@@ -72,6 +75,7 @@ fun CategoriesScreen(modifier: Modifier) {
             )
         }
     ) { innerPadding ->
+
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
             modifier = modifier
@@ -82,7 +86,9 @@ fun CategoriesScreen(modifier: Modifier) {
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
+
             items(franchises) { univers ->
+
                 val context = LocalContext.current
 
                 Button(
@@ -90,7 +96,7 @@ fun CategoriesScreen(modifier: Modifier) {
                         val intent = Intent(context, CategoriesActivity::class.java)
                         intent.putExtra("category", univers)
                         context.startActivity(intent)
-                              },
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .aspectRatio(1.1f),

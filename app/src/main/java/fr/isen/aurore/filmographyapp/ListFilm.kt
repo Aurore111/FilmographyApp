@@ -74,7 +74,7 @@ fun ListFilm(modifier: Modifier, categoryName: String?) {
                     Text(
                         text = categoryName ?: "Films",
                         fontWeight = FontWeight.ExtraBold,
-                        color = Color(0xFF3E2723)
+                        color = Color.White
                     )
                 },
 

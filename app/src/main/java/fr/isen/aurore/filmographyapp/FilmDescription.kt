@@ -50,6 +50,9 @@ fun FilmDescription(
         "Possède en DVD/Blu-Ray",
         "Veut s'en débarrasser"
     )
+    val watchStatuses = listOf("Vu", "À voir")
+    val ownStatuses = listOf("Possède en DVD Blu-Ray", "Veut s'en débarrasser")
+
     val selectedStatuses = remember { mutableStateListOf<String>() }
     val owners = listOf("Alice", "Bob", "Charlie")
     val wantToSell = listOf("Bob")
@@ -75,11 +78,10 @@ fun FilmDescription(
     LaunchedEffect(title) {
         val filmKey = title.replace(".", "")
         userRef.child(filmKey).get().addOnSuccessListener { snapshot ->
-            val savedStatus = snapshot.value?.toString()
-            if (savedStatus != null) {
-                selectedStatuses.clear()
-                selectedStatuses.add(savedStatus)
-            }
+            selectedStatuses.clear()
+            snapshot.child("watch").value?.toString()?.let { selectedStatuses.add(it) }
+            snapshot.child("own").value?.toString()?.let { selectedStatuses.add(it) }
+            snapshot.child("sell").value?.toString()?.let { selectedStatuses.add(it) }
         }
     }
 
@@ -184,19 +186,71 @@ fun FilmDescription(
                             fontSize = 16.sp,
                             color = Color(0xFF3E2723)
                         )
-                        statuses.forEach { status ->
+                        Text("Statut de visionnage", fontWeight = FontWeight.SemiBold, fontSize = 14.sp, color = Color(0xFF3E2723))
+                        watchStatuses.forEach { status ->
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(vertical = 4.dp)
+                            ) { RadioButton(
+                                selected = selectedStatuses.contains(status),
+                                onClick = {
+                                    val filmKey = title.replace(".", "")
+                                    watchStatuses.forEach { selectedStatuses.remove(it) }
+                                    selectedStatuses.add(status)
+                                    userRef.child(filmKey).child("watch").setValue(status)
+                                    }
+                                )
+                                Text(text = status, fontSize = 16.sp, color = Color(0xFF5D4037))
+                            }
+                        }
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        Text("Possession", fontWeight = FontWeight.SemiBold, fontSize = 14.sp, color = Color(0xFF3E2723))
+                        ownStatuses.forEach { status ->
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)
                             ) {
                                 Checkbox(
                                     checked = selectedStatuses.contains(status),
                                     onCheckedChange = { checked ->
                                         val filmKey = title.replace(".", "")
                                         if (checked) {
-                                            selectedStatuses.clear()
+                                            // "Veut s'en débarrasser" coche automatiquement "Possède en DVD Blu-Ray"
+                                            if (status == "Veut s'en débarrasser") {
+                                                selectedStatuses.add("Possède en DVD Blu-Ray")
+                                                userRef.child(filmKey).child("own").setValue("Possède en DVD Blu-Ray")
+                                            }
+                                            if (status == "Possède en DVD Blu-Ray") {
+                                                userRef.child(filmKey).child("own").setValue("Possède en DVD Blu-Ray")
+                                            }
+                                            selectedStatuses.add(status)
+                                            if (status == "Veut s'en débarrasser") {
+                                                userRef.child(filmKey).child("sell").setValue(status)
+                                            }
+                                        }  else {
+                                            selectedStatuses.remove(status)
+                                            if (status == "Possède en DVD Blu-Ray") {
+                                                userRef.child(filmKey).child("own").removeValue()
+                                            }
+                                            if (status == "Veut s'en débarrasser") {
+                                                userRef.child(filmKey).child("sell").removeValue()
+                                            }
+                                        }
+                                    }
+                                )
+                                Text(text = status, fontSize = 16.sp, color = Color(0xFF5D4037))
+                            }
+                        }
+
+                          /*      Checkbox(
+                                    checked = selectedStatuses.contains(status),
+                                    onCheckedChange = { checked ->
+                                        val filmKey = title.replace(".", "")
+                                        if (checked) {
+                                            //selectedStatuses.clear()
                                             selectedStatuses.add(status)
                                             userRef.child(filmKey).setValue(status)
                                         } else {
@@ -211,7 +265,7 @@ fun FilmDescription(
                                     color = Color(0xFF5D4037)
                                 )
                             }
-                        }
+                        }*/
                     }
                 }
             }

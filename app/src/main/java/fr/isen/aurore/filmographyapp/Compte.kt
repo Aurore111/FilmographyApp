@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.sp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import androidx.compose.foundation.lazy.items //souvent pas mis et cause error
+import androidx.compose.ui.text.style.TextOverflow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -144,7 +145,7 @@ fun Compte(modifier: Modifier) {
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(text = film, fontSize = 16.sp, color = Color(0xFF3E2723))
+                    Text(text = film, fontSize = 16.sp, color = Color(0xFF3E2723), maxLines = 2, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f))
 
                     IconButton(onClick = {
                         database.getReference("userFilms").child(userId).child(film).removeValue()
@@ -153,7 +154,7 @@ fun Compte(modifier: Modifier) {
                         Icon(
                             imageVector = Icons.Default.Delete,
                             contentDescription = "Supprimer",
-                            tint = Color.White
+                            tint = Color.Black
                         )
                     }
                 }

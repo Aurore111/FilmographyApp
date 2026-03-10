@@ -68,7 +68,7 @@ fun Compte(modifier: Modifier) {
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
-            .background(Color(0xFFFCCFA4))
+            .background(Color(0xFF050505))
             .padding(24.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -78,7 +78,7 @@ fun Compte(modifier: Modifier) {
                 imageVector = Icons.Default.AccountCircle,
                 contentDescription = "Profil",
                 modifier = Modifier.size(100.dp),
-                tint = Color(0xFF3E2723)
+                tint = Color.White
             )
             Spacer(modifier = Modifier.height(16.dp))
         }
@@ -89,7 +89,7 @@ fun Compte(modifier: Modifier) {
                 text = user?.displayName ?: user?.email ?: "Non connecté",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color(0xFF3E2723)
+                color = Color.White
             )
             Spacer(modifier = Modifier.height(32.dp))
         }
@@ -108,7 +108,7 @@ fun Compte(modifier: Modifier) {
                     (context as? ComponentActivity)?.finish()
                 },
                 shape = RoundedCornerShape(12.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3E2723))
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE50914))
             ) {
                 Text(text = "Se déconnecter", color = Color.White)
             }
@@ -119,7 +119,7 @@ fun Compte(modifier: Modifier) {
                 text = "Mes films possédés",
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color(0xFF3E2723)
+                color = Color.White
             )
             Spacer(modifier = Modifier.height(8.dp))
         }
@@ -153,7 +153,7 @@ fun Compte(modifier: Modifier) {
                         Icon(
                             imageVector = Icons.Default.Delete,
                             contentDescription = "Supprimer",
-                            tint = Color(0xFF3E2723)
+                            tint = Color.White
                         )
                     }
                 }

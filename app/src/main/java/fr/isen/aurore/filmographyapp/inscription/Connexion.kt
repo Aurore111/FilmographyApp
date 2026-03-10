@@ -33,7 +33,7 @@ fun Connexion(modifier: Modifier) {
     var isLogin by remember { mutableStateOf(true) }
 
     Column(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFF050505))
             .padding(24.dp),
@@ -45,7 +45,7 @@ fun Connexion(modifier: Modifier) {
             text = if (isLogin) "Connexion" else "Inscription",
             fontSize = 28.sp,
             fontWeight = FontWeight.ExtraBold,
-            color = Color(0xFF3E2723)
+            color = Color.White
         )
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -53,20 +53,37 @@ fun Connexion(modifier: Modifier) {
         OutlinedTextField(
             value = email,
             onValueChange = { email = it },
-            label = { Text("Email") },
+            label = { Text("Email", color = Color.White) },
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(12.dp)
+            shape = RoundedCornerShape(12.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = Color.White,
+            unfocusedTextColor = Color.White,
+            cursorColor = Color.Red,
+            focusedBorderColor = Color.Red,
+            unfocusedBorderColor = Color.White,
+            focusedLabelColor = Color.Red,
+            unfocusedLabelColor = Color.White
         )
-
+        )
         Spacer(modifier = Modifier.height(12.dp))
 
         if (!isLogin) {
             OutlinedTextField(
                 value = username,
                 onValueChange = { username = it },
-                label = { Text("Nom d'utilisateur") },
+                label = { Text("Nom d'utilisateur", color = Color.White) },
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp)
+                shape = RoundedCornerShape(12.dp),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = Color.White,
+                    unfocusedTextColor = Color.White,
+                    cursorColor = Color.Red,
+                    focusedBorderColor = Color.Red,
+                    unfocusedBorderColor = Color.White,
+                    focusedLabelColor = Color.Red,
+                    unfocusedLabelColor = Color.White
+                )
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -75,10 +92,19 @@ fun Connexion(modifier: Modifier) {
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
-            label = { Text("Mot de passe (6 caractères)") },
+            label = { Text("Mot de passe (6 caractères)", color = Color.White) },
             visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(12.dp)
+            shape = RoundedCornerShape(12.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedTextColor = Color.White,
+                unfocusedTextColor = Color.White,
+                cursorColor = Color.Red,
+                focusedBorderColor = Color.Red,
+                unfocusedBorderColor = Color.White,
+                focusedLabelColor = Color.Red,
+                unfocusedLabelColor = Color.White
+            )
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -156,7 +182,7 @@ fun Connexion(modifier: Modifier) {
             },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(12.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3E2723))
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE50914))
         ) {
 
             Text(
@@ -173,7 +199,7 @@ fun Connexion(modifier: Modifier) {
 
             Text(
                 text = if (isLogin) "Pas de compte ? S'inscrire" else "Déjà un compte ? Se connecter",
-                color = Color(0xFF5D4037)
+                color = Color.White
             )
 
         }

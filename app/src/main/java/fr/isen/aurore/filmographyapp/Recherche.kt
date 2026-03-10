@@ -68,8 +68,7 @@ fun Recherche(modifier: Modifier) {
                         allFilms.add(
                             mapOf(
                                 "title" to (film.child("titre").value?.toString() ?: ""),
-                                "universe" to (category.key ?: ""),
-                                "genre" to (film.child("genre").value?.toString() ?: ""),
+                                "universe" to (category.child("categorie").value?.toString() ?: ""),                                "genre" to (film.child("genre").value?.toString() ?: ""),
                                 "year" to (film.child("annee").value?.toString() ?: "")
                             )
                         )
@@ -168,6 +167,7 @@ fun FilmCarousel(films: List<Map<String, String>>, context: android.content.Cont
             Card(
                 modifier = Modifier
                     .width(130.dp)
+                    .height(220.dp)
                     .clickable {
                         val intent = Intent(context, FilmDescriptionActivity::class.java)
                         intent.putExtra("Film", film["title"])

@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.firebase.database.FirebaseDatabase
@@ -120,14 +121,14 @@ fun FilmOwn(modifier: Modifier) {
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-
-                        Column {
-
+                        Column(modifier = Modifier.weight(1f)) {
                             Text(
                                 text = entry["film"] ?: "",
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 16.sp,
-                                color = Color(0xFF3E2723)
+                                color = Color(0xFF3E2723),
+                                maxLines = 2,
+                                overflow = TextOverflow.Ellipsis
                             )
 
                             Text(
@@ -138,14 +139,13 @@ fun FilmOwn(modifier: Modifier) {
                         }
 
                         if (entry["wantToSell"] == "true") {
-
                             Text(
                                 text = "Veut vendre",
                                 fontSize = 12.sp,
                                 color = Color.White,
                                 modifier = Modifier
                                     .background(
-                                        Color(0xFF3E2723),
+                                        Color(0xFFE50914),
                                         RoundedCornerShape(8.dp)
                                     )
                                     .padding(horizontal = 8.dp, vertical = 4.dp)

@@ -69,7 +69,7 @@ class MainActivity : ComponentActivity() {
             FilmographyAppTheme {
 
                 val currentItem: MutableState<NavigationItem> =
-                    remember { mutableStateOf(NavigationItem.Home) }
+                    remember { mutableStateOf(NavigationItem.Search) }
 
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),

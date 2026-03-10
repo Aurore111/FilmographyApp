@@ -57,7 +57,7 @@ fun FilmDescription(
     val owners = listOf("Alice", "Bob", "Charlie")
     val wantToSell = listOf("Bob")
 
-    /* ---------- Chargement du film ---------- */
+
 
     LaunchedEffect(filmTitle) {
 
@@ -83,7 +83,7 @@ fun FilmDescription(
         }
     }
 
-    /* ---------- Chargement du statut utilisateur ---------- */
+
 
     LaunchedEffect(title) {
 
@@ -100,7 +100,7 @@ fun FilmDescription(
         }
     }
 
-    /* ---------- UI ---------- */
+
 
     Scaffold(
         topBar = {
@@ -137,7 +137,6 @@ fun FilmDescription(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
 
-            /* ---------- Poster ---------- */
 
             item {
 
@@ -153,7 +152,7 @@ fun FilmDescription(
 
             }
 
-            /* ---------- Infos film ---------- */
+
 
             item {
 
@@ -200,7 +199,7 @@ fun FilmDescription(
                 }
             }
 
-            /* ---------- Statut utilisateur ---------- */
+
 
             item {
 
@@ -266,7 +265,7 @@ fun FilmDescription(
                 }
             }
 
-            /* ---------- Utilisateurs (temporaire) ---------- */
+
 
             item {
 

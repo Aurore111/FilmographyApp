@@ -32,6 +32,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.ui.Alignment
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.ui.draw.blur
 
 
 @OptIn(ExperimentalMaterial3Api::class)

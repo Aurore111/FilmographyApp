@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -40,6 +41,9 @@ import androidx.compose.ui.unit.sp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import androidx.compose.foundation.lazy.items //souvent pas mis et cause error
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.ui.text.style.TextOverflow
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -65,96 +69,152 @@ fun Compte(modifier: Modifier) {
                 }
             }
     }
-
-    LazyColumn(
-        modifier = modifier
-            .fillMaxSize()
-            .background(Color(0xFF050505))
-            .padding(24.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        item {
-            Icon(
-                imageVector = Icons.Default.AccountCircle,
-                contentDescription = "Profil",
-                modifier = Modifier.size(100.dp),
-                tint = Color.White
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-
-
-        item {
-            Text(
-                text = user?.displayName ?: user?.email ?: "Non connecté",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.White
-            )
-            Spacer(modifier = Modifier.height(32.dp))
-        }
-
-
-        item {
-            Button(
-                onClick = {
-                    FirebaseAuth.getInstance().signOut()
-                    context.startActivity(
-                        Intent(
-                            context,
-                            fr.isen.aurore.filmographyapp.inscription.ConnexionActivity::class.java
-                        )
+    Scaffold(
+        topBar = {
+            CenterAlignedTopAppBar(
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = Color(0xFFE50914)
+                ),
+                title = {
+                    Text(
+                        text = "Films possédés",
+                        fontWeight = FontWeight.ExtraBold,
+                        color = Color.White
                     )
-                    (context as? ComponentActivity)?.finish()
-                },
-                shape = RoundedCornerShape(12.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE50914))
-            ) {
-                Text(text = "Se déconnecter", color = Color.White)
-            }
-            Spacer(modifier = Modifier.height(32.dp))
-        }
-        item {
-            Text(
-                text = "Mes films possédés",
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.White
+                }
             )
-            Spacer(modifier = Modifier.height(8.dp))
         }
+    ) { innerPadding ->
+        LazyColumn(
+            modifier = modifier
+                .fillMaxSize()
+                .background(Color(0xFF050505))
+                .padding(innerPadding)
+                .padding(24.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            item {
+                Icon(
+                    imageVector = Icons.Default.AccountCircle,
+                    contentDescription = "Profil",
+                    modifier = Modifier.size(100.dp),
+                    tint = Color.White
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+            }
 
-        items(ownedFilms) { film ->
-            Card (
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 4.dp)
-                    .clickable { //permet d'afficher la descrip film quand on clique dessu
-                val intent = Intent(context, FilmDescriptionActivity::class.java)
-                intent.putExtra("Film", film)
-                context.startActivity(intent)
-            },
-                shape = RoundedCornerShape(12.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.White.copy(alpha = 0.8f))
-            ) {
-                Row (
+
+            item {
+                Text(
+                    text = user?.displayName ?: user?.email ?: "Non connecté",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+                Spacer(modifier = Modifier.height(32.dp))
+            }
+
+
+            item {
+                Button(
+                    onClick = {
+                        FirebaseAuth.getInstance().signOut()
+                        context.startActivity(
+                            Intent(
+                                context,
+                                fr.isen.aurore.filmographyapp.inscription.ConnexionActivity::class.java
+                            )
+                        )
+                        (context as? ComponentActivity)?.finish()
+                    },
+                    shape = RoundedCornerShape(12.dp),
+                    modifier = Modifier.fillMaxWidth().height(52.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE50914))
+                ) {
+                    Text(text = "Se déconnecter", color = Color.White, fontSize = 16.sp)
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+            item {
+                Button(
+                    onClick = {
+                        context.startActivity(
+                            Intent(context, FilmOwnActivity::class.java)
+                        )
+                    },
+                    shape = RoundedCornerShape(12.dp),
+                    modifier = Modifier.fillMaxWidth().height(52.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2E7D32))
+                ) {
+                    Text(text = "Films à acheter", color = Color.White, fontSize = 16.sp)
+                }
+                Spacer(modifier = Modifier.height(32.dp))
+            }
+            item {
+                Text(
+                    text = "Mes films possédés",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+            }
+
+            items(ownedFilms) { film ->
+                Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(12.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                        .padding(vertical = 4.dp)
+                        .clickable { //permet d'afficher la descrip film quand on clique dessu
+                            val intent = Intent(context, FilmDescriptionActivity::class.java)
+                            intent.putExtra("Film", film)
+                            context.startActivity(intent)
+                        },
+                    shape = RoundedCornerShape(12.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color.White.copy(alpha = 0.8f))
                 ) {
-                    Text(text = film, fontSize = 16.sp, color = Color(0xFF3E2723), maxLines = 2, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f))
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(12.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = film,
+                            fontSize = 16.sp,
+                            color = Color(0xFF3E2723),
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.weight(1f)
+                        )
 
-                    IconButton(onClick = {
-                        database.getReference("userFilms").child(userId).child(film).removeValue()
-                        ownedFilms.remove(film)
-                    }) {
-                        Icon(
-                            imageVector = Icons.Default.Delete,
-                            contentDescription = "Supprimer",
-                            tint = Color.Black
+                        IconButton(onClick = {
+                            database.getReference("userFilms").child(userId).child(film)
+                                .removeValue()
+                            ownedFilms.remove(film)
+                        }) {
+                            Icon(
+                                imageVector = Icons.Default.Delete,
+                                contentDescription = "Supprimer",
+                                tint = Color.Black
+                            )
+                        }
+                    }
+                }
+            }
+            if (ownedFilms.isEmpty()) {
+                item {
+                    Box(
+                        modifier = Modifier.fillMaxWidth().padding(32.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "Tu ne posséde auncun film pour le moment.",
+                            color = Color.White,
+                            fontSize = 16.sp,
+                            textAlign = androidx.compose.ui.text.style.TextAlign.Center
                         )
                     }
                 }

@@ -154,6 +154,21 @@ fun FilmOwn(modifier: Modifier) {
                     }
                 }
             }
+            if (filmsOwned.isEmpty()) {
+                item {
+                    Box(
+                        modifier = Modifier.fillMaxWidth().padding(32.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "Aucun film possédé pour le moment.",
+                            color = Color.White,
+                            fontSize = 18.sp,
+                            textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                        )
+                    }
+                }
+            }
         }
     }
 }

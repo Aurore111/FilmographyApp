@@ -129,7 +129,7 @@ fun ListFilm(modifier: Modifier, categoryName: String?) {
                 LaunchedEffect(film) {
                     try {
                         val movie = api.getMovie(film, apiKey)
-                        posterUrl = movie.Poster
+                        posterUrl = movie.Poster.toString()
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }

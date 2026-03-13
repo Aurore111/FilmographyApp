@@ -165,7 +165,7 @@ fun Recherche(modifier: Modifier) { //page d'acceuil et de recherche de films
                 OutlinedTextField(
                     value = searchQuery,
                     onValueChange = { searchQuery = it },
-                    placeholder = { Text("Rechercher un film...") },
+                    placeholder = { Text("Rechercher un film par nom...") },
                     leadingIcon = {
                         Icon(Icons.Default.Search, contentDescription = null, tint = Color(0xFF3E2723))
                     },

@@ -19,6 +19,9 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.auth.FirebaseAuth
 import androidx.compose.material.icons.Icons
 import coil.compose.AsyncImage
+import fr.isen.aurore.filmographyapp.api.OmdbApi
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -41,14 +44,15 @@ fun FilmDescription(
     )
 
     val auth = FirebaseAuth.getInstance()
-    val userId = auth.currentUser?.uid
-
-    val userRef = if (userId != null) {
-        database.getReference("userFilms").child(userId)
-    } else null
-
+    val userId = auth.currentUser?.uid ?: return
+    val userRef = database.getReference("userFilms").child(userId)
     val ref = database.getReference("categories")
-
+    val statuses = listOf(
+        "Vu",
+        "À voir",
+        "Possède en DVD/Blu-Ray",
+        "Veut s'en débarrasser"
+    )
     val watchStatuses = listOf("Vu", "À voir")
     val ownStatuses = listOf("Possède en DVD Blu-Ray", "Veut s'en débarrasser")
 
@@ -56,33 +60,27 @@ fun FilmDescription(
     val owners = remember { mutableStateListOf<String>() }
     val wantToSell = remember { mutableStateListOf<String>() }
 
+    val retrofit = remember {
+        Retrofit.Builder()
+            .baseUrl("https://www.omdbapi.com/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    val api = retrofit.create(OmdbApi::class.java)
     val apiKey = "2f17e6ee"
 
-    /*
-    --------------------------------
-    Récupération infos film Firebase
-    --------------------------------
-    */
-
     LaunchedEffect(filmTitle) {
-
         ref.get().addOnSuccessListener { snapshot ->
-
             snapshot.children.forEach { category ->
-
                 category.child("franchises").children.forEach { franchise ->
-
                     franchise.child("films").children.forEach { film ->
-
                         val titre = film.child("titre").value.toString()
-
                         if (titre == filmTitle) {
-
                             title = titre
                             description = film.child("description").value.toString()
                             genre = film.child("genre").value.toString()
                             annee = film.child("annee").value.toString()
-
                         }
                     }
                 }
@@ -90,22 +88,10 @@ fun FilmDescription(
         }
     }
 
-    /*
-    --------------------------------
-    Chargement statuts utilisateurs
-    --------------------------------
-    */
-
     LaunchedEffect(title) {
-
         if (title.isEmpty()) return@LaunchedEffect
-
         val filmKey = title.replace(".", "")
-
-        userRef?.child(filmKey)?.get()?.addOnSuccessListener { snapshot ->
-
-            selectedStatuses.clear()
-
+        userRef.child(filmKey).get().addOnSuccessListener { snapshot ->            selectedStatuses.clear()
             snapshot.child("watch").value?.toString()?.let {
                 selectedStatuses.add(it)
             }

@@ -41,9 +41,14 @@ import androidx.compose.ui.unit.sp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import androidx.compose.foundation.lazy.items //souvent pas mis et cause error
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -77,7 +82,7 @@ fun Compte(modifier: Modifier) {
                 ),
                 title = {
                     Text(
-                        text = "Films possédés",
+                        text = "Comptes",
                         fontWeight = FontWeight.ExtraBold,
                         color = Color.White
                     )
@@ -90,8 +95,8 @@ fun Compte(modifier: Modifier) {
                 .fillMaxSize()
                 .background(Color(0xFF050505))
                 .padding(innerPadding)
-                .padding(24.dp),
-            verticalArrangement = Arrangement.Center,
+                .padding(horizontal = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             item {
@@ -101,20 +106,109 @@ fun Compte(modifier: Modifier) {
                     modifier = Modifier.size(100.dp),
                     tint = Color.White
                 )
-                Spacer(modifier = Modifier.height(16.dp))
-            }
-
-
-            item {
+                Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = user?.displayName ?: user?.email ?: "Non connecté",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
-                Spacer(modifier = Modifier.height(32.dp))
             }
 
+            item {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Column(
+                        modifier = Modifier.weight(1f),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(90.dp)
+                                .clickable { context.startActivity(Intent(context, FilmVuActivity::class.java)) },
+                            shape = RoundedCornerShape(12.dp),
+                            colors = CardDefaults.cardColors(containerColor = Color(0xFF1A1A2E))
+                        ) {
+                            Column(
+                                modifier = Modifier.fillMaxSize(),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center
+                            ) {
+                                Icon(Icons.Default.CheckCircle, contentDescription = null, tint = Color.White, modifier = Modifier.size(28.dp))
+                                Spacer(modifier = Modifier.height(4.dp))
+                                Text("Films vus", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
+                            }
+                        }
+
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(90.dp)
+                                .clickable {
+                                    context.startActivity(Intent(context, FilmOwnActivity::class.java))
+                                },
+                            shape = RoundedCornerShape(12.dp),
+                            colors = CardDefaults.cardColors(containerColor = Color(0xFF1A2E1A))
+                        ) {
+                            Column(
+                                modifier = Modifier.fillMaxSize(),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center
+                            ) {
+                                Icon(Icons.Default.ShoppingCart, contentDescription = null, tint = Color(0xFF2E7D32), modifier = Modifier.size(28.dp))
+                                Spacer(modifier = Modifier.height(4.dp))
+                                Text("Films à acheter", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
+                            }
+                        }
+                    }
+                    Column(
+                        modifier = Modifier.weight(1f),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(90.dp)
+                                .clickable { }, //faire page mes films a voir---------------
+                            shape = RoundedCornerShape(12.dp),
+                            colors = CardDefaults.cardColors(containerColor = Color(0xFF1A1A2E))
+                        ) {
+                            Column(
+                                modifier = Modifier.fillMaxSize(),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center
+                            ) {
+                                Icon(Icons.Default.Star, contentDescription = null, tint = Color.White, modifier = Modifier.size(28.dp))
+                                Spacer(modifier = Modifier.height(4.dp))
+                                Text("Films à voir", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
+                            }
+                        }
+
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(90.dp)
+                                .clickable {}, //faire page MES films a vendre-------------------------
+                            shape = RoundedCornerShape(12.dp),
+                            colors = CardDefaults.cardColors(containerColor = Color(0xFF2E1A1A))
+                        ) {
+                            Column(
+                                modifier = Modifier.fillMaxSize(),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center
+                            ) {
+                                Icon(Icons.Default.List, contentDescription = null, tint = Color(0xFFE57373), modifier = Modifier.size(28.dp))
+                                Spacer(modifier = Modifier.height(4.dp))
+                                Text("Mes films à vendre", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
+                            }
+                        }
+                    }
+                }
+            }
 
             item {
                 Button(
@@ -134,23 +228,8 @@ fun Compte(modifier: Modifier) {
                 ) {
                     Text(text = "Se déconnecter", color = Color.White, fontSize = 16.sp)
                 }
-                Spacer(modifier = Modifier.height(16.dp))
             }
-            item {
-                Button(
-                    onClick = {
-                        context.startActivity(
-                            Intent(context, FilmOwnActivity::class.java)
-                        )
-                    },
-                    shape = RoundedCornerShape(12.dp),
-                    modifier = Modifier.fillMaxWidth().height(52.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2E7D32))
-                ) {
-                    Text(text = "Films à acheter", color = Color.White, fontSize = 16.sp)
-                }
-                Spacer(modifier = Modifier.height(32.dp))
-            }
+
             item {
                 Text(
                     text = "Mes films possédés",

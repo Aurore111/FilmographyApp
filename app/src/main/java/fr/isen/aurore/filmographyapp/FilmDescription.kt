@@ -109,45 +109,31 @@ fun FilmDescription(
         userRef.child(filmKey).get().addOnSuccessListener { snapshot ->
 
             selectedStatuses.clear()
-
             snapshot.child("watch").value?.toString()?.let {
                 selectedStatuses.add(it)
             }
-
             snapshot.child("own").value?.toString()?.let {
                 selectedStatuses.add(it)
             }
-
             snapshot.child("sell").value?.toString()?.let {
                 selectedStatuses.add(it)
             }
         }
 
-        //partie Utilisateurs dans page description film
-
         owners.clear()
         wantToSell.clear()
-
         database.getReference("userFilms").get().addOnSuccessListener { snapshot ->
-
             snapshot.children.forEach { userSnap ->
-
                 val uid = userSnap.key ?: ""
-
                 val film = userSnap.child(filmKey)
-
                 val own = film.child("own").value?.toString()
                 val sell = film.child("sell").value?.toString()
 
                 if (own == "Possède en DVD Blu-Ray" || sell == "Veut s'en débarrasser") {
-
                     database.getReference("users").child(uid).child("username")
                         .get().addOnSuccessListener { nameSnap ->
-
                             val username = nameSnap.value?.toString() ?: uid
-
                             if (own == "Possède en DVD Blu-Ray") owners.add(username)
-
                             if (sell == "Veut s'en débarrasser") wantToSell.add(username)
                         }
                 }
@@ -155,27 +141,20 @@ fun FilmDescription(
         }
 
         try {
-
             val movie = api.getMovie(title, apiKey)
             posterUrl = movie.Poster ?: ""
-
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
     Scaffold(
-
         topBar = {
-
             CenterAlignedTopAppBar(
-
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = Color(0xFFE50914)
                 ),
-
                 title = {
-
                     Text(
                         text = title,
                         fontWeight = FontWeight.ExtraBold,
@@ -184,13 +163,10 @@ fun FilmDescription(
                 },
 
                 navigationIcon = {
-
                     if (showBackButton) {
-
                         IconButton(
                             onClick = { (context as? ComponentActivity)?.finish() }
                         ) {
-
                             Icon(
                                 Icons.AutoMirrored.Filled.ArrowBack,
                                 contentDescription = "Retour"
@@ -202,21 +178,16 @@ fun FilmDescription(
         }
 
     ) { innerPadding ->
-
         LazyColumn(
-
             modifier = modifier
                 .fillMaxSize()
                 .background(Color(0xFF050505))
                 .padding(innerPadding)
                 .padding(16.dp),
-
             verticalArrangement = Arrangement.spacedBy(16.dp)
-
         ) {
 
             item {
-
                 AsyncImage(
                     model = posterUrl,
                     contentDescription = title,
@@ -227,25 +198,18 @@ fun FilmDescription(
             }
 
             item {
-
                 Card(
-
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(16.dp),
-
                     colors = CardDefaults.cardColors(
                         containerColor = Color.White.copy(alpha = 0.8f)
                     )
-
                 ) {
 
                     Column(
-
                         modifier = Modifier.padding(16.dp),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
-
                     ) {
-
                         Text(
                             text = title,
                             fontWeight = FontWeight.ExtraBold,
@@ -277,23 +241,17 @@ fun FilmDescription(
             }
 
             item {
-
                 Card(
-
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(16.dp),
-
                     colors = CardDefaults.cardColors(
                         containerColor = Color.White.copy(alpha = 0.8f)
                     )
-
                 ) {
 
                     Column(
-
                         modifier = Modifier.padding(16.dp),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
-
                     ) {
 
                         Text(
@@ -320,19 +278,13 @@ fun FilmDescription(
                             ) {
 
                                 RadioButton(
-
                                     selected = selectedStatuses.contains(status),
-
                                     onClick = {
-
                                         val filmKey = title.replace(".", "")
-
                                         watchStatuses.forEach {
                                             selectedStatuses.remove(it)
                                         }
-
                                         selectedStatuses.add(status)
-
                                         userRef.child(filmKey)
                                             .child("watch")
                                             .setValue(status)
@@ -359,40 +311,29 @@ fun FilmDescription(
                         ownStatuses.forEach { status ->
 
                             Row(
-
                                 verticalAlignment = Alignment.CenterVertically,
-
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(vertical = 4.dp)
                             ) {
 
                                 Checkbox(
-
                                     checked = selectedStatuses.contains(status),
-
                                     onCheckedChange = { checked ->
-
                                         val filmKey = title.replace(".", "")
-
                                         if (checked) {
-
                                             // "Veut s'en débarrasser" coche automatiquement "Possède en DVD Blu-Ray"
-
                                             if (
                                                 status == "Veut s'en débarrasser"
                                                 && !selectedStatuses.contains("Possède en DVD Blu-Ray")
                                             ) {
-
                                                 selectedStatuses.add("Possède en DVD Blu-Ray")
-
                                                 userRef.child(filmKey)
                                                     .child("own")
                                                     .setValue("Possède en DVD Blu-Ray")
                                             }
 
                                             selectedStatuses.add(status)
-
                                             userRef.child(filmKey)
                                                 .child(
                                                     if (status == "Possède en DVD Blu-Ray")
@@ -403,11 +344,8 @@ fun FilmDescription(
                                                 .setValue(status)
 
                                         } else {
-
                                             selectedStatuses.remove(status)
-
                                             if (status == "Possède en DVD Blu-Ray") {
-
                                                 userRef.child(filmKey)
                                                     .child("own")
                                                     .removeValue()
@@ -435,23 +373,17 @@ fun FilmDescription(
             }
 
             item {
-
                 Card(
-
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(16.dp),
-
                     colors = CardDefaults.cardColors(
                         containerColor = Color.White.copy(alpha = 0.8f)
                     )
-
                 ) {
 
                     Column(
-
                         modifier = Modifier.padding(16.dp),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
-
                     ) {
 
                         Text(

@@ -220,7 +220,7 @@ fun Vendre(modifier: Modifier) {
                                     )
                                 }
                                 Text(
-                                    text = "En vendre",
+                                    text = "En vente",
                                     fontSize = 12.sp,
                                     color = Color.White,
                                     modifier = Modifier

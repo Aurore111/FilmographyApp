@@ -217,7 +217,7 @@ fun Recherche(modifier: Modifier) { //page d'acceuil et de recherche de films
                                 .padding(12.dp)
                         ) {
                             Column {
-                                Text("Film du moment", fontSize = 11.sp, color = Color(0xFFE50914), fontWeight = FontWeight.Bold)
+                                Text("Film du moment <3", fontSize = 11.sp, color = Color(0xFFE50914), fontWeight = FontWeight.Bold)
                                 Text(film["title"] ?: "", fontSize = 16.sp, color = Color.White, fontWeight = FontWeight.Bold)
                             }
                         }

@@ -78,6 +78,7 @@ fun Compte(modifier: Modifier) {
     val userId = user?.uid ?: ""
     val ownedFilms = remember { mutableStateListOf<String>() }
 
+
     LaunchedEffect(userId) {
         database.getReference("userFilms").child(userId)
             .get().addOnSuccessListener { snapshot ->

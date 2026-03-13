@@ -4,8 +4,12 @@ import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -13,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
@@ -21,9 +26,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.database.FirebaseDatabase
 import fr.isen.aurore.filmographyapp.MainActivity
-import androidx.compose.foundation.Image
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.layout.ContentScale
 import fr.isen.aurore.filmographyapp.R
 
 @Composable
@@ -36,6 +38,14 @@ fun Connexion(modifier: Modifier) {
     var password by remember { mutableStateOf("") }
     var isLogin by remember { mutableStateOf(true) }
 
+    var selectedAvatar by remember { mutableStateOf<Int?>(null) }
+
+    val avatars = listOf(
+        R.drawable.avatar1,
+        R.drawable.avatar2,
+        R.drawable.avatar3
+    )
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -44,14 +54,6 @@ fun Connexion(modifier: Modifier) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(
-            painter = painterResource(R.drawable.logoflix),
-            contentDescription = "logo",
-            modifier = Modifier
-                .height(120.dp)
-                .padding(bottom = 20.dp),
-            contentScale = ContentScale.Fit
-        )
 
         Text(
             text = if (isLogin) "Connexion" else "Inscription",
@@ -59,6 +61,41 @@ fun Connexion(modifier: Modifier) {
             fontWeight = FontWeight.ExtraBold,
             color = Color.White
         )
+
+        if (!isLogin) {
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Text(
+                text = "Choisis ton avatar",
+                color = Color.White,
+                fontSize = 16.sp
+            )
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            LazyRow(
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+
+                items(avatars) { avatar ->
+
+                    Image(
+                        painter = painterResource(avatar),
+                        contentDescription = "avatar",
+                        modifier = Modifier
+                            .size(70.dp)
+                            .clickable {
+                                selectedAvatar = avatar
+                            }
+                    )
+
+                }
+
+            }
+        }
+
+
 
         Spacer(modifier = Modifier.height(12.dp))
 
@@ -68,19 +105,21 @@ fun Connexion(modifier: Modifier) {
             label = { Text("Email", color = Color.White) },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(12.dp),
-                    colors = OutlinedTextFieldDefaults.colors(
-                    focusedTextColor = Color.White,
-            unfocusedTextColor = Color.White,
-            cursorColor = Color.Red,
-            focusedBorderColor = Color.Red,
-            unfocusedBorderColor = Color.White,
-            focusedLabelColor = Color.Red,
-            unfocusedLabelColor = Color.White
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedTextColor = Color.White,
+                unfocusedTextColor = Color.White,
+                cursorColor = Color.Red,
+                focusedBorderColor = Color.Red,
+                unfocusedBorderColor = Color.White,
+                focusedLabelColor = Color.Red,
+                unfocusedLabelColor = Color.White
+            )
         )
-        )
+
         Spacer(modifier = Modifier.height(12.dp))
 
         if (!isLogin) {
+
             OutlinedTextField(
                 value = username,
                 onValueChange = { username = it },
@@ -98,7 +137,8 @@ fun Connexion(modifier: Modifier) {
                 )
             )
 
-            Spacer(modifier = Modifier.height(12.dp))
+
+            Spacer(modifier = Modifier.height(20.dp))
         }
 
         OutlinedTextField(
@@ -131,15 +171,12 @@ fun Connexion(modifier: Modifier) {
                     auth.signInWithEmailAndPassword(email, password)
                         .addOnSuccessListener {
 
-                            Log.d("AUTH", "Connexion réussie")
-
                             context.startActivity(Intent(context, MainActivity::class.java))
                             (context as? ComponentActivity)?.finish()
 
                         }
                         .addOnFailureListener {
 
-                            Log.d("AUTH", "Erreur connexion : ${it.message}")
                             Toast.makeText(context, "Erreur : ${it.message}", Toast.LENGTH_SHORT).show()
 
                         }
@@ -164,20 +201,20 @@ fun Connexion(modifier: Modifier) {
 
                             uid?.let { userId ->
 
-                                Log.d("DB_TEST", "UID = $userId  username = $username")
-
                                 database.getReference("users")
                                     .child(userId)
                                     .child("username")
                                     .setValue(username)
-                                    .addOnSuccessListener {
-                                        Log.d("DB_TEST", "Pseudo enregistré dans Firebase")
-                                    }
-                                    .addOnFailureListener {
-                                        Log.d("DB_TEST", "Erreur Firebase : ${it.message}")
-                                    }
+
+                                selectedAvatar?.let {
+
+                                    database.getReference("users")
+                                        .child(userId)
+                                        .child("avatar")
+                                        .setValue(it)
+
+                                }
                             }
-                            Log.d("AUTH", "Inscription réussie")
 
                             context.startActivity(Intent(context, MainActivity::class.java))
                             (context as? ComponentActivity)?.finish()
@@ -185,7 +222,6 @@ fun Connexion(modifier: Modifier) {
                         }
                         .addOnFailureListener {
 
-                            Log.d("AUTH", "Erreur inscription : ${it.message}")
                             Toast.makeText(context, "Erreur : ${it.message}", Toast.LENGTH_SHORT).show()
 
                         }
@@ -210,12 +246,14 @@ fun Connexion(modifier: Modifier) {
         TextButton(onClick = { isLogin = !isLogin }) {
 
             Text(
-                text = if (isLogin) "Pas de compte ? S'inscrire" else "Déjà un compte ? Se connecter",
+                text = if (isLogin)
+                    "Pas de compte ? S'inscrire"
+                else
+                    "Déjà un compte ? Se connecter",
                 color = Color.White
             )
 
         }
 
     }
-
 }

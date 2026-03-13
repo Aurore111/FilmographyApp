@@ -1,4 +1,4 @@
-package ComptePage
+package fr.isen.aurore.filmographyapp.ComptePage
 
 import android.content.Intent
 import androidx.activity.ComponentActivity

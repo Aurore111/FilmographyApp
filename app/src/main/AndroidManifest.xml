@@ -14,17 +14,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FilmographyApp">
         <activity
-            android:name="ComptePage.FilmAVendreActivity"
+            android:name=".ComptePage.FilmAVendreActivity"
             android:exported="false"
             android:label="@string/title_activity_film_avendre"
             android:theme="@style/Theme.FilmographyApp" />
         <activity
-            android:name="ComptePage.FilmAVoirActivity"
+            android:name=".ComptePage.FilmAVoirActivity"
             android:exported="false"
             android:label="@string/title_activity_film_avoir"
             android:theme="@style/Theme.FilmographyApp" />
         <activity
-            android:name="ComptePage.FilmVuActivity"
+            android:name=".ComptePage.FilmVuActivity"
             android:exported="false"
             android:label="@string/title_activity_film_vu"
             android:theme="@style/Theme.FilmographyApp" />
@@ -39,7 +39,7 @@
             android:label="@string/title_activity_film_own"
             android:theme="@style/Theme.FilmographyApp" />
         <activity
-            android:name="ComptePage.CompteActivity"
+            android:name=".ComptePage.CompteActivity"
             android:exported="false"
             android:label="@string/title_activity_compte"
             android:theme="@style/Theme.FilmographyApp" />

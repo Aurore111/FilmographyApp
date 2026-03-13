@@ -1,4 +1,4 @@
-package ComptePage
+package fr.isen.aurore.filmographyapp.ComptePage
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,14 +10,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import fr.isen.aurore.filmographyapp.ui.theme.FilmographyAppTheme
 
-class CompteActivity : ComponentActivity() {
+class FilmAVoirActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             FilmographyAppTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Compte(
+                    FilmAVoir(
                         modifier = Modifier.padding(innerPadding)
                     )
                 }

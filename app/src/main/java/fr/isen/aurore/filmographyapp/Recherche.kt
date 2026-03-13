@@ -299,6 +299,7 @@ fun Recherche(modifier: Modifier) { //page d'acceuil et de recherche de films
             byGenre.forEach { (genre, films) ->
                 item {
                     Text(genre, fontWeight = FontWeight.SemiBold, fontSize = 15.sp, color = Color.White)
+
                     FilmCarousel(films, context)
                 }
             }

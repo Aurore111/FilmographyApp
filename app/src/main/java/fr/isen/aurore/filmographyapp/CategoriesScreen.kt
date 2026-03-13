@@ -122,6 +122,7 @@ fun CategoriesScreen(modifier: Modifier) {
                             "Pixar" -> R.drawable.pixar
                             "Disney" -> R.drawable.disney
                             "Avatar" -> R.drawable.avatar
+                            "Harry Potter" -> R.drawable.harrypotter
                             else -> null
                         }
 

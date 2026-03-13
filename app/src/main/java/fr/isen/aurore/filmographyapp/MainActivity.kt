@@ -31,13 +31,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.google.firebase.auth.FirebaseAuth
 import androidx.compose.ui.graphics.Color
+import androidx.compose.runtime.LaunchedEffect
 
 enum class NavigationItem(
     val title: String,
     val icon: ImageVector,
     val route: String
 ){
-    CheckCircle(title = "Descritions", Icons.Default.CheckCircle, route = "CheckCircle"),
+    CheckCircle(title = "Descriptions", Icons.Default.CheckCircle, route = "CheckCircle"),
     Home(title = "Catégories", Icons.Default.List, route = "Home"),
     Search(title = "Home", Icons.Default.Home, route = "Search"), //icone home car c'est la page d'acceuil mais le fichier s appelle rechercher
     List(title = "Possédés", Icons.Default.Create, route = "List"),
@@ -70,6 +71,26 @@ class MainActivity : ComponentActivity() {
 
                 val currentItem: MutableState<NavigationItem> =
                     remember { mutableStateOf(NavigationItem.Search) }
+
+                val randomFilm = remember { mutableStateOf<String?>(null) }
+
+                LaunchedEffect(Unit) {
+                    val films = mutableListOf<String>()
+
+                    ref.get().addOnSuccessListener { snapshot ->
+                        snapshot.children.forEach { category ->
+                            category.child("franchises").children.forEach { franchise ->
+                                franchise.child("films").children.forEach { film ->
+                                    films.add(film.child("titre").value.toString())
+                                }
+                            }
+                        }
+
+                        if (films.isNotEmpty()) {
+                            randomFilm.value = films.random()
+                        }
+                    }
+                }
 
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
@@ -106,7 +127,7 @@ class MainActivity : ComponentActivity() {
                         NavigationItem.Home -> CategoriesScreen(Modifier.padding(innerPadding))
                         NavigationItem.CheckCircle -> FilmDescription(
                             Modifier.padding(innerPadding),
-                            filmTitle = "Toy Story",
+                            filmTitle = randomFilm.value,
                             showBackButton = false
                         )
                         NavigationItem.Search -> Recherche(Modifier.padding(innerPadding))

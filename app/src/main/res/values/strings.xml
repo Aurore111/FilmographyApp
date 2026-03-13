@@ -7,4 +7,5 @@
     <string name="title_activity_film_own">FilmOwnActivity</string>
     <string name="title_activity_recherche">RechercheActivity</string>
     <string name="title_activity_carousel">CarouselActivity</string>
+    <string name="title_activity_film_vu">FilmVuActivity</string>
 </resources>

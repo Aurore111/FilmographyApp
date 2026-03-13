@@ -45,6 +45,7 @@ import com.google.firebase.database.FirebaseDatabase
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 
+//page de films que les autres utilisateur veulent vendre
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Vendre(modifier: Modifier) {

@@ -130,7 +130,7 @@ fun Compte(modifier: Modifier) {
                                 .height(90.dp)
                                 .clickable { context.startActivity(Intent(context, FilmVuActivity::class.java)) },
                             shape = RoundedCornerShape(12.dp),
-                            colors = CardDefaults.cardColors(containerColor = Color(0xFF1A1A2E))
+                            colors = CardDefaults.cardColors(containerColor = Color(0xFF1A1A7D))
                         ) {
                             Column(
                                 modifier = Modifier.fillMaxSize(),
@@ -151,14 +151,14 @@ fun Compte(modifier: Modifier) {
                                     context.startActivity(Intent(context, FilmOwnActivity::class.java))
                                 },
                             shape = RoundedCornerShape(12.dp),
-                            colors = CardDefaults.cardColors(containerColor = Color(0xFF1A2E1A))
+                            colors = CardDefaults.cardColors(containerColor = Color(0xFF1A5C1A))
                         ) {
                             Column(
                                 modifier = Modifier.fillMaxSize(),
                                 horizontalAlignment = Alignment.CenterHorizontally,
                                 verticalArrangement = Arrangement.Center
                             ) {
-                                Icon(Icons.Default.ShoppingCart, contentDescription = null, tint = Color(0xFF2E7D32), modifier = Modifier.size(28.dp))
+                                Icon(Icons.Default.ShoppingCart, contentDescription = null, tint = Color.White, modifier = Modifier.size(28.dp))
                                 Spacer(modifier = Modifier.height(4.dp))
                                 Text("Films à acheter", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
                             }
@@ -173,9 +173,9 @@ fun Compte(modifier: Modifier) {
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(90.dp)
-                                .clickable { }, //faire page mes films a voir---------------
+                                .clickable {context.startActivity(Intent(context, FilmAVoirActivity::class.java)) },
                             shape = RoundedCornerShape(12.dp),
-                            colors = CardDefaults.cardColors(containerColor = Color(0xFF1A1A2E))
+                            colors = CardDefaults.cardColors(containerColor = Color(0xFF7D6B00))
                         ) {
                             Column(
                                 modifier = Modifier.fillMaxSize(),
@@ -192,16 +192,16 @@ fun Compte(modifier: Modifier) {
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(90.dp)
-                                .clickable {}, //faire page MES films a vendre-------------------------
+                                .clickable {context.startActivity(Intent(context, FilmAVendreActivity::class.java)) },
                             shape = RoundedCornerShape(12.dp),
-                            colors = CardDefaults.cardColors(containerColor = Color(0xFF2E1A1A))
+                            colors = CardDefaults.cardColors(containerColor = Color(0xFF5C1A1A))
                         ) {
                             Column(
                                 modifier = Modifier.fillMaxSize(),
                                 horizontalAlignment = Alignment.CenterHorizontally,
                                 verticalArrangement = Arrangement.Center
                             ) {
-                                Icon(Icons.Default.List, contentDescription = null, tint = Color(0xFFE57373), modifier = Modifier.size(28.dp))
+                                Icon(Icons.Default.List, contentDescription = null, tint = Color.White, modifier = Modifier.size(28.dp))
                                 Spacer(modifier = Modifier.height(4.dp))
                                 Text("Mes films à vendre", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
                             }

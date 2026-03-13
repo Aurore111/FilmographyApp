@@ -1,4 +1,4 @@
-package fr.isen.aurore.filmographyapp.ComptePage
+package fr.isen.aurore.filmographyapp
 
 import android.content.Intent
 import androidx.compose.foundation.Image
@@ -13,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -20,9 +21,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.google.firebase.database.FirebaseDatabase
-import fr.isen.aurore.filmographyapp.FilmDescriptionActivity
-import fr.isen.aurore.filmographyapp.R
+import fr.isen.aurore.filmographyapp.api.OmdbApi
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -101,12 +104,26 @@ fun FilmOwn(modifier: Modifier) {
         ) {
 
             items(filmsOwned) { entry ->
+                var posterUrl by remember { mutableStateOf("") }
+
+                LaunchedEffect(entry["film"]) {
+                    try {
+                        val retrofit = Retrofit.Builder()
+                            .baseUrl("https://www.omdbapi.com/")
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build()
+                        val api = retrofit.create(OmdbApi::class.java)
+                        val movie = api.getMovie(entry["film"] ?: "", "2f17e6ee")
+                        posterUrl = movie.Poster ?: ""
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
 
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable {
-
                             val intent = Intent(context, FilmDescriptionActivity::class.java)
                             intent.putExtra("Film", entry["film"])
                             context.startActivity(intent)
@@ -117,7 +134,6 @@ fun FilmOwn(modifier: Modifier) {
                         containerColor = Color.White.copy(alpha = 0.8f)
                     )
                 ) {
-
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -125,35 +141,61 @@ fun FilmOwn(modifier: Modifier) {
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = entry["film"] ?: "",
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 16.sp,
-                                color = Color(0xFF3E2723),
-                                maxLines = 2,
-                                overflow = TextOverflow.Ellipsis
+                        if (posterUrl.isNotEmpty()) {
+                            AsyncImage(
+                                model = posterUrl,
+                                contentDescription = entry["film"],
+                                modifier = Modifier.width(70.dp).height(90.dp),
+                                contentScale = ContentScale.Crop
                             )
-
-                            Text(
-                                text = "Possédé par : ${entry["user"]}",
-                                fontSize = 14.sp,
-                                color = Color(0xFF5D4037)
-                            )
+                        } else {
+                            Box(
+                                modifier = Modifier.width(70.dp).height(90.dp)
+                                    .background(Color(0xFFD7CCC8)),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                CircularProgressIndicator(
+                                    color = Color(0xFF3E2723),
+                                    modifier = Modifier.size(24.dp)
+                                )
+                            }
                         }
+                        Row(
+                            modifier = Modifier.weight(1f).padding(12.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
 
-                        if (entry["wantToSell"] == "true") {
-                            Text(
-                                text = "Veut vendre",
-                                fontSize = 12.sp,
-                                color = Color.White,
-                                modifier = Modifier
-                                    .background(
-                                        Color(0xFFE50914),
-                                        RoundedCornerShape(8.dp)
-                                    )
-                                    .padding(horizontal = 8.dp, vertical = 4.dp)
-                            )
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = entry["film"] ?: "",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 16.sp,
+                                    color = Color(0xFF3E2723),
+                                    maxLines = 2,
+                                    overflow = TextOverflow.Ellipsis
+                                )
+
+                                Text(
+                                    text = "Possédé par : ${entry["user"]}",
+                                    fontSize = 14.sp,
+                                    color = Color(0xFF5D4037)
+                                )
+                            }
+
+                            if (entry["wantToSell"] == "true") {
+                                Text(
+                                    text = "Veut vendre",
+                                    fontSize = 12.sp,
+                                    color = Color.White,
+                                    modifier = Modifier
+                                        .background(
+                                            Color(0xFFE50914),
+                                            RoundedCornerShape(8.dp)
+                                        )
+                                        .padding(horizontal = 8.dp, vertical = 4.dp)
+                                )
+                            }
                         }
                     }
                 }

@@ -65,7 +65,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.painterResource
-import fr.isen.aurore.filmographyapp.ComptePage.FilmOwnActivity
 import fr.isen.aurore.filmographyapp.inscription.ConnexionActivity
 
 @OptIn(ExperimentalMaterial3Api::class)

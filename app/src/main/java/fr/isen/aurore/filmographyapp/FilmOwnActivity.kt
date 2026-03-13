@@ -19,6 +19,7 @@ class FilmOwnActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     FilmOwn(
                         modifier = Modifier.padding(innerPadding)
+                            .fillMaxSize()
                     )
                 }
             }

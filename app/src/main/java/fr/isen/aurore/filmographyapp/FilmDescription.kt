@@ -122,7 +122,7 @@ fun FilmDescription(
         }
         try {
             val movie = api.getMovie(title, apiKey)
-            posterUrl = movie.Poster
+            posterUrl = movie.Poster.toString()
         } catch (e: Exception) {
             e.printStackTrace()
         }

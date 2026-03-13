@@ -219,7 +219,7 @@ fun FilmCarousel(films: List<Map<String, String>>, context: android.content.Cont
                         .build()
                     val api = retrofit.create(OmdbApi::class.java)
                     val movie = api.getMovie(film["title"] ?: "", "2f17e6ee")
-                    posterUrl = movie.Poster
+                    posterUrl = movie.Poster.toString()
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }

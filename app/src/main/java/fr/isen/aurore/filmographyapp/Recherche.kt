@@ -160,7 +160,6 @@ fun Recherche(modifier: Modifier) { //page d'acceuil et de recherche de films
         ) {
 
             item {   //ma barre de recherche
-
                 Spacer(modifier = Modifier.height(8.dp))
                 OutlinedTextField(
                     value = searchQuery,

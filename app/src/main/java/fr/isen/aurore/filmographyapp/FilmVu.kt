@@ -30,6 +30,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,18 +43,28 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import fr.isen.aurore.filmographyapp.api.OmdbApi
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.layout.ContentScale
+import coil.compose.AsyncImage
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FilmVu(modifier: Modifier)
-{
+fun FilmVu(modifier: Modifier) {
     val database = FirebaseDatabase.getInstance(
         "https://filmographyapp-8fb1e-default-rtdb.europe-west1.firebasedatabase.app"
     )
     val context = LocalContext.current
     val user = FirebaseAuth.getInstance().currentUser
     val userId = user?.uid ?: ""
-    val vuFilms  = remember { mutableStateListOf<String>() }
+    val vuFilms = remember { mutableStateListOf<String>() }
 
     LaunchedEffect(userId) {
         database.getReference("userFilms").child(userId)
@@ -79,13 +90,17 @@ fun FilmVu(modifier: Modifier)
                 },
                 navigationIcon = {
                     IconButton(onClick = { (context as? ComponentActivity)?.finish() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Retour", tint = Color.White)
+                        Icon(
+                            Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Retour",
+                            tint = Color.White
+                        )
                     }
                 }
             )
         }
     ) { innerPadding ->
-        LazyColumn (
+        LazyColumn(
 
             modifier = modifier
                 .fillMaxSize()
@@ -113,6 +128,22 @@ fun FilmVu(modifier: Modifier)
             }
 
             items(vuFilms) { film ->
+                var posterUrl by remember { mutableStateOf("") }
+
+                LaunchedEffect(film) {
+                    try {
+                        val retrofit = Retrofit.Builder()
+                            .baseUrl("https://www.omdbapi.com/")
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build()
+                        val api = retrofit.create(OmdbApi::class.java)
+                        val movie = api.getMovie(film, "2f17e6ee")
+                        posterUrl = movie.Poster ?: ""
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -125,29 +156,57 @@ fun FilmVu(modifier: Modifier)
                     colors = CardDefaults.cardColors(containerColor = Color.White.copy(alpha = 0.8f))
                 ) {
                     Row(
-                        modifier = Modifier.fillMaxWidth().padding(12.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(
-                            text = film,
-                            fontSize = 16.sp,
-                            color = Color(0xFF3E2723),
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis,
-                            modifier = Modifier.weight(1f)
-                        )
-                        IconButton(onClick = {
-                            database.getReference("userFilms").child(userId).child(film).child("watch").removeValue()
-                            vuFilms.remove(film)
-                        }) {
-                            Icon(Icons.Default.Delete, contentDescription = "Supprimer", tint = Color.Black)
+                        if (posterUrl.isNotEmpty()) {
+                            AsyncImage(
+                                model = posterUrl,
+                                contentDescription = film,
+                                modifier = Modifier.width(70.dp).height(90.dp),
+                                contentScale = ContentScale.Crop
+                            )
+                        } else {
+                            Box(
+                                modifier = Modifier.width(70.dp).height(90.dp)
+                                    .background(Color(0xFFD7CCC8)),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                CircularProgressIndicator(
+                                    color = Color(0xFF3E2723),
+                                    modifier = Modifier.size(24.dp)
+                                )
+                            }
+                        }
+                        Row(
+                            modifier = Modifier.weight(1f).padding(12.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = film,
+                                fontSize = 16.sp,
+                                color = Color(0xFF3E2723),
+                                maxLines = 2,
+                                overflow = TextOverflow.Ellipsis,
+                                modifier = Modifier.weight(1f)
+                            )
+                            IconButton(onClick = {
+                                database.getReference("userFilms").child(userId).child(film)
+                                    .child("watch").removeValue()
+                                vuFilms.remove(film)
+                            }) {
+                                Icon(
+                                    Icons.Default.Delete,
+                                    contentDescription = "Supprimer",
+                                    tint = Color.Black
+                                )
+                            }
                         }
                     }
                 }
+                //  item { Spacer(modifier = Modifier.height(16.dp)) }
             }
-
-            item { Spacer(modifier = Modifier.height(16.dp)) }
         }
     }
 }

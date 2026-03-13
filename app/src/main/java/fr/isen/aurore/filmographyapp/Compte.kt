@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -46,10 +47,19 @@ import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import coil.compose.AsyncImage
+import fr.isen.aurore.filmographyapp.api.OmdbApi
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -96,7 +106,7 @@ fun Compte(modifier: Modifier) {
                 .background(Color(0xFF050505))
                 .padding(innerPadding)
                 .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(24.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             item {
@@ -106,13 +116,14 @@ fun Compte(modifier: Modifier) {
                     modifier = Modifier.size(100.dp),
                     tint = Color.White
                 )
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(16.dp))
                 Text(
                     text = user?.displayName ?: user?.email ?: "Non connecté",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
+                Spacer(modifier = Modifier.height(16.dp))
             }
 
             item {
@@ -128,7 +139,14 @@ fun Compte(modifier: Modifier) {
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(90.dp)
-                                .clickable { context.startActivity(Intent(context, FilmVuActivity::class.java)) },
+                                .clickable {
+                                    context.startActivity(
+                                        Intent(
+                                            context,
+                                            FilmVuActivity::class.java
+                                        )
+                                    )
+                                },
                             shape = RoundedCornerShape(12.dp),
                             colors = CardDefaults.cardColors(containerColor = Color(0xFF1A1A7D))
                         ) {
@@ -137,9 +155,20 @@ fun Compte(modifier: Modifier) {
                                 horizontalAlignment = Alignment.CenterHorizontally,
                                 verticalArrangement = Arrangement.Center
                             ) {
-                                Icon(Icons.Default.CheckCircle, contentDescription = null, tint = Color.White, modifier = Modifier.size(28.dp))
+                                Icon(
+                                    Icons.Default.CheckCircle,
+                                    contentDescription = null,
+                                    tint = Color.White,
+                                    modifier = Modifier.size(28.dp)
+                                )
                                 Spacer(modifier = Modifier.height(4.dp))
-                                Text("Films vus", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
+                                Text(
+                                    "Films vus",
+                                    color = Color.White,
+                                    fontSize = 16.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    textAlign = TextAlign.Center
+                                )
                             }
                         }
 
@@ -148,7 +177,12 @@ fun Compte(modifier: Modifier) {
                                 .fillMaxWidth()
                                 .height(90.dp)
                                 .clickable {
-                                    context.startActivity(Intent(context, FilmOwnActivity::class.java))
+                                    context.startActivity(
+                                        Intent(
+                                            context,
+                                            FilmOwnActivity::class.java
+                                        )
+                                    )
                                 },
                             shape = RoundedCornerShape(12.dp),
                             colors = CardDefaults.cardColors(containerColor = Color(0xFF1A5C1A))
@@ -158,9 +192,20 @@ fun Compte(modifier: Modifier) {
                                 horizontalAlignment = Alignment.CenterHorizontally,
                                 verticalArrangement = Arrangement.Center
                             ) {
-                                Icon(Icons.Default.ShoppingCart, contentDescription = null, tint = Color.White, modifier = Modifier.size(28.dp))
+                                Icon(
+                                    Icons.Default.ShoppingCart,
+                                    contentDescription = null,
+                                    tint = Color.White,
+                                    modifier = Modifier.size(28.dp)
+                                )
                                 Spacer(modifier = Modifier.height(4.dp))
-                                Text("Films à acheter", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
+                                Text(
+                                    "Films à acheter",
+                                    color = Color.White,
+                                    fontSize = 16.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    textAlign = TextAlign.Center
+                                )
                             }
                         }
                     }
@@ -173,7 +218,14 @@ fun Compte(modifier: Modifier) {
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(90.dp)
-                                .clickable {context.startActivity(Intent(context, FilmAVoirActivity::class.java)) },
+                                .clickable {
+                                    context.startActivity(
+                                        Intent(
+                                            context,
+                                            FilmAVoirActivity::class.java
+                                        )
+                                    )
+                                },
                             shape = RoundedCornerShape(12.dp),
                             colors = CardDefaults.cardColors(containerColor = Color(0xFF7D6B00))
                         ) {
@@ -182,9 +234,20 @@ fun Compte(modifier: Modifier) {
                                 horizontalAlignment = Alignment.CenterHorizontally,
                                 verticalArrangement = Arrangement.Center
                             ) {
-                                Icon(Icons.Default.Star, contentDescription = null, tint = Color.White, modifier = Modifier.size(28.dp))
+                                Icon(
+                                    Icons.Default.Star,
+                                    contentDescription = null,
+                                    tint = Color.White,
+                                    modifier = Modifier.size(28.dp)
+                                )
                                 Spacer(modifier = Modifier.height(4.dp))
-                                Text("Films à voir", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
+                                Text(
+                                    "Films à voir",
+                                    color = Color.White,
+                                    fontSize = 16.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    textAlign = TextAlign.Center
+                                )
                             }
                         }
 
@@ -192,7 +255,14 @@ fun Compte(modifier: Modifier) {
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(90.dp)
-                                .clickable {context.startActivity(Intent(context, FilmAVendreActivity::class.java)) },
+                                .clickable {
+                                    context.startActivity(
+                                        Intent(
+                                            context,
+                                            FilmAVendreActivity::class.java
+                                        )
+                                    )
+                                },
                             shape = RoundedCornerShape(12.dp),
                             colors = CardDefaults.cardColors(containerColor = Color(0xFF5C1A1A))
                         ) {
@@ -201,9 +271,20 @@ fun Compte(modifier: Modifier) {
                                 horizontalAlignment = Alignment.CenterHorizontally,
                                 verticalArrangement = Arrangement.Center
                             ) {
-                                Icon(Icons.Default.List, contentDescription = null, tint = Color.White, modifier = Modifier.size(28.dp))
+                                Icon(
+                                    Icons.Default.List,
+                                    contentDescription = null,
+                                    tint = Color.White,
+                                    modifier = Modifier.size(28.dp)
+                                )
                                 Spacer(modifier = Modifier.height(4.dp))
-                                Text("Mes films à vendre", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
+                                Text(
+                                    "Mes films à vendre",
+                                    color = Color.White,
+                                    fontSize = 16.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    textAlign = TextAlign.Center
+                                )
                             }
                         }
                     }
@@ -228,6 +309,7 @@ fun Compte(modifier: Modifier) {
                 ) {
                     Text(text = "Se déconnecter", color = Color.White, fontSize = 16.sp)
                 }
+                Spacer(modifier = Modifier.height(16.dp))
             }
 
             item {
@@ -237,14 +319,29 @@ fun Compte(modifier: Modifier) {
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
-                Spacer(modifier = Modifier.height(8.dp))
             }
 
             items(ownedFilms) { film ->
+                var posterUrl by remember { mutableStateOf("") }
+
+                LaunchedEffect(film) {
+                    try {
+                        val retrofit = Retrofit.Builder()
+                            .baseUrl("https://www.omdbapi.com/")
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build()
+                        val api = retrofit.create(OmdbApi::class.java)
+                        val movie = api.getMovie(film, "2f17e6ee")
+                        posterUrl = movie.Poster ?: ""
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 4.dp)
+                        // .padding(vertical = 4.dp)
                         .clickable { //permet d'afficher la descrip film quand on clique dessu
                             val intent = Intent(context, FilmDescriptionActivity::class.java)
                             intent.putExtra("Film", film)
@@ -254,50 +351,79 @@ fun Compte(modifier: Modifier) {
                     colors = CardDefaults.cardColors(containerColor = Color.White.copy(alpha = 0.8f))
                 ) {
                     Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(12.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(
-                            text = film,
-                            fontSize = 16.sp,
-                            color = Color(0xFF3E2723),
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis,
-                            modifier = Modifier.weight(1f)
-                        )
+                        if (posterUrl.isNotEmpty()) {
+                            AsyncImage(
+                                model = posterUrl,
+                                contentDescription = film,
+                                modifier = Modifier
+                                    .width(70.dp)
+                                    .height(90.dp),
+                                contentScale = ContentScale.Crop
+                            )
+                        } else {
+                            Box(
+                                modifier = Modifier
+                                    .width(70.dp)
+                                    .height(90.dp)
+                                    .background(Color(0xFFD7CCC8)),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                CircularProgressIndicator(
+                                    color = Color(0xFF3E2723),
+                                    modifier = Modifier.size(24.dp)
+                                )
+                            }
+                        }
+                        Row(
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(12.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = film,
+                                fontSize = 16.sp,
+                                color = Color(0xFF3E2723),
+                                maxLines = 2,
+                                overflow = TextOverflow.Ellipsis,
+                                modifier = Modifier.weight(1f)
+                            )
 
-                        IconButton(onClick = {
-                            database.getReference("userFilms").child(userId).child(film)
-                                .removeValue()
-                            ownedFilms.remove(film)
-                        }) {
-                            Icon(
-                                imageVector = Icons.Default.Delete,
-                                contentDescription = "Supprimer",
-                                tint = Color.Black
+                            IconButton(onClick = {
+                                database.getReference("userFilms").child(userId).child(film)
+                                    .removeValue()
+                                ownedFilms.remove(film)
+                            }) {
+                                Icon(
+                                    imageVector = Icons.Default.Delete,
+                                    contentDescription = "Supprimer",
+                                    tint = Color.Black
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+                if (ownedFilms.isEmpty()) {
+                    item {
+                        Box(
+                            modifier = Modifier.fillMaxWidth().padding(32.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = "Tu ne posséde auncun film pour le moment.",
+                                color = Color.White,
+                                fontSize = 16.sp,
+                                textAlign = androidx.compose.ui.text.style.TextAlign.Center
                             )
                         }
                     }
                 }
             }
-            if (ownedFilms.isEmpty()) {
-                item {
-                    Box(
-                        modifier = Modifier.fillMaxWidth().padding(32.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = "Tu ne posséde auncun film pour le moment.",
-                            color = Color.White,
-                            fontSize = 16.sp,
-                            textAlign = androidx.compose.ui.text.style.TextAlign.Center
-                        )
-                    }
-                }
-            }
         }
-    }
 }
+

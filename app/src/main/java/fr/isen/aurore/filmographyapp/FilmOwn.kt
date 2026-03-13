@@ -63,7 +63,7 @@ fun FilmOwn(modifier: Modifier) {
                                     )
                                 )
                                 pending--
-                                if (pending ==0) filmsOwned = list.toList()    // copie de la liste
+                                if (pending ==0) filmsOwned = list.toList()
                             }
                     }
                 }
@@ -78,7 +78,7 @@ fun FilmOwn(modifier: Modifier) {
                     containerColor = Color(0xFFE50914)),
                 title = {
                     Text(
-                        text = "Films possédés",
+                        text = "Films utilisateurs",
                         fontWeight = FontWeight.ExtraBold,
                         color = Color.White
                     )

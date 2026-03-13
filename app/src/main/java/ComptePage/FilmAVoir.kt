@@ -1,4 +1,4 @@
-package fr.isen.aurore.filmographyapp
+package ComptePage
 
 import android.content.Intent
 import androidx.activity.ComponentActivity
@@ -53,6 +53,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import fr.isen.aurore.filmographyapp.FilmDescriptionActivity
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

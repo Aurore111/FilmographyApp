@@ -1,4 +1,4 @@
-package fr.isen.aurore.filmographyapp
+package ComptePage
 
 import android.content.Intent
 import androidx.activity.ComponentActivity
@@ -60,6 +60,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import fr.isen.aurore.filmographyapp.FilmDescriptionActivity
+import fr.isen.aurore.filmographyapp.FilmOwnActivity
+import fr.isen.aurore.filmographyapp.inscription.ConnexionActivity
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -298,7 +301,7 @@ fun Compte(modifier: Modifier) {
                         context.startActivity(
                             Intent(
                                 context,
-                                fr.isen.aurore.filmographyapp.inscription.ConnexionActivity::class.java
+                                ConnexionActivity::class.java
                             )
                         )
                         (context as? ComponentActivity)?.finish()
@@ -418,7 +421,7 @@ fun Compte(modifier: Modifier) {
                                 text = "Tu ne posséde auncun film pour le moment.",
                                 color = Color.White,
                                 fontSize = 16.sp,
-                                textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                                textAlign = TextAlign.Center
                             )
                         }
                     }

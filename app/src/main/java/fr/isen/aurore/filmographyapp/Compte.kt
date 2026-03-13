@@ -130,7 +130,7 @@ fun Compte(modifier: Modifier) {
                                 .height(90.dp)
                                 .clickable { context.startActivity(Intent(context, FilmVuActivity::class.java)) },
                             shape = RoundedCornerShape(12.dp),
-                            colors = CardDefaults.cardColors(containerColor = Color(0xFF1A1A2E))
+                            colors = CardDefaults.cardColors(containerColor = Color(0xFF1A1A7D))
                         ) {
                             Column(
                                 modifier = Modifier.fillMaxSize(),
@@ -151,7 +151,7 @@ fun Compte(modifier: Modifier) {
                                     context.startActivity(Intent(context, FilmOwnActivity::class.java))
                                 },
                             shape = RoundedCornerShape(12.dp),
-                            colors = CardDefaults.cardColors(containerColor = Color(0xFF1A2E1A))
+                            colors = CardDefaults.cardColors(containerColor = Color(0xFF1A5C1A))
                         ) {
                             Column(
                                 modifier = Modifier.fillMaxSize(),
@@ -173,9 +173,10 @@ fun Compte(modifier: Modifier) {
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(90.dp)
-                                .clickable { }, //faire page mes films a voir---------------
+                                .clickable {context.startActivity(Intent(context, FilmAVoirActivity::class.java))
+                                },
                             shape = RoundedCornerShape(12.dp),
-                            colors = CardDefaults.cardColors(containerColor = Color(0xFF1A1A2E))
+                            colors = CardDefaults.cardColors(containerColor = Color(0xFF7D6B00))
                         ) {
                             Column(
                                 modifier = Modifier.fillMaxSize(),
@@ -194,7 +195,7 @@ fun Compte(modifier: Modifier) {
                                 .height(90.dp)
                                 .clickable {}, //faire page MES films a vendre-------------------------
                             shape = RoundedCornerShape(12.dp),
-                            colors = CardDefaults.cardColors(containerColor = Color(0xFF2E1A1A))
+                            colors = CardDefaults.cardColors(containerColor = Color(0xFF5C1A1A))
                         ) {
                             Column(
                                 modifier = Modifier.fillMaxSize(),

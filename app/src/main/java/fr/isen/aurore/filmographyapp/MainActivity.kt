@@ -93,8 +93,6 @@ class MainActivity : ComponentActivity() {
                                         )
                                     },
                                     colors = NavigationBarItemDefaults.colors(
-                                      //  selectedIconColor = Color.Black,
-                                      //  unselectedIconColor = Color.White,
                                         selectedTextColor = Color.White,
                                         unselectedTextColor = Color.White,
                                         indicatorColor = Color.Black

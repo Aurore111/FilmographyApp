@@ -21,6 +21,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.database.FirebaseDatabase
 import fr.isen.aurore.filmographyapp.MainActivity
+import androidx.compose.foundation.Image
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.layout.ContentScale
+import fr.isen.aurore.filmographyapp.R
 
 @Composable
 fun Connexion(modifier: Modifier) {
@@ -40,6 +44,14 @@ fun Connexion(modifier: Modifier) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Image(
+            painter = painterResource(R.drawable.logoflix),
+            contentDescription = "logo",
+            modifier = Modifier
+                .height(120.dp)
+                .padding(bottom = 20.dp),
+            contentScale = ContentScale.Fit
+        )
 
         Text(
             text = if (isLogin) "Connexion" else "Inscription",

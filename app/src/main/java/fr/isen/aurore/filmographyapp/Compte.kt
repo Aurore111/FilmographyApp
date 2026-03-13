@@ -96,7 +96,7 @@ fun Compte(modifier: Modifier) {
                 .background(Color(0xFF050505))
                 .padding(innerPadding)
                 .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(24.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             item {
@@ -106,13 +106,14 @@ fun Compte(modifier: Modifier) {
                     modifier = Modifier.size(100.dp),
                     tint = Color.White
                 )
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(16.dp))
                 Text(
                     text = user?.displayName ?: user?.email ?: "Non connecté",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
+                Spacer(modifier = Modifier.height(16.dp))
             }
 
             item {
@@ -228,6 +229,7 @@ fun Compte(modifier: Modifier) {
                 ) {
                     Text(text = "Se déconnecter", color = Color.White, fontSize = 16.sp)
                 }
+                Spacer(modifier = Modifier.height(16.dp))
             }
 
             item {
@@ -237,14 +239,13 @@ fun Compte(modifier: Modifier) {
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
-                Spacer(modifier = Modifier.height(8.dp))
             }
 
             items(ownedFilms) { film ->
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 4.dp)
+                       // .padding(vertical = 4.dp)
                         .clickable { //permet d'afficher la descrip film quand on clique dessu
                             val intent = Intent(context, FilmDescriptionActivity::class.java)
                             intent.putExtra("Film", film)

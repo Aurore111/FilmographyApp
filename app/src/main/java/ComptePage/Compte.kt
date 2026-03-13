@@ -1,5 +1,8 @@
 package fr.isen.aurore.filmographyapp
 
+import ComptePage.FilmAVendreActivity
+import ComptePage.FilmAVoirActivity
+import ComptePage.FilmVuActivity
 import android.content.Intent
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.Image

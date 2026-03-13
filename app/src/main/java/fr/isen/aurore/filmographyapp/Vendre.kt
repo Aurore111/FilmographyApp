@@ -1,4 +1,4 @@
-package ComptePage
+package fr.isen.aurore.filmographyapp
 
 import android.content.Intent
 import androidx.activity.ComponentActivity
@@ -48,7 +48,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.layout.ContentScale
 import coil.compose.AsyncImage
-import fr.isen.aurore.filmographyapp.FilmDescriptionActivity
 import fr.isen.aurore.filmographyapp.api.OmdbApi
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

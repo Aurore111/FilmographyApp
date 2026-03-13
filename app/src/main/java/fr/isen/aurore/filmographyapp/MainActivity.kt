@@ -1,6 +1,5 @@
 package fr.isen.aurore.filmographyapp
 
-import ComptePage.Compte
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity

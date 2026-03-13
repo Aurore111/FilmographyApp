@@ -57,6 +57,9 @@ import coil.compose.AsyncImage  //Ne Pas Oublier dans buil.gradle.kts ( le 2e) d
 import com.google.firebase.auth.FirebaseAuth
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import androidx.compose.foundation.Image
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -137,10 +140,10 @@ fun Recherche(modifier: Modifier) { //page d'acceuil et de recherche de films
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = Color(0xFFE50914)),
                 title = {
-                    Text(
-                        text = "Home",
-                        fontWeight = FontWeight.ExtraBold,
-                        color = Color.White
+                    Image(
+                        painter = painterResource(R.drawable.logoflix),
+                        contentDescription = "logo",
+                        modifier = Modifier.height(200.dp)
                     )
                 }
             )

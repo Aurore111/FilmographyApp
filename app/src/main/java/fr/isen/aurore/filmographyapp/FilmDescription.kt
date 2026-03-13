@@ -171,7 +171,9 @@ fun FilmDescription(
                         ) {
                             Icon(
                                 Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Retour"
+                                contentDescription = "Retour",
+                                tint = Color.White
+
                             )
                         }
                     }

@@ -1,6 +1,7 @@
 package fr.isen.aurore.filmographyapp
 
 import android.content.Intent
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -122,7 +123,9 @@ fun Recherche(modifier: Modifier) { //page d'acceuil et de recherche de films
                 val api = retrofit.create(OmdbApi::class.java)
                 val movie = api.getMovie(randomFilm?.get("title") ?: "", "2f17e6ee")
                 randomPosterUrl = movie.Poster ?: ""
-            } catch (e: Exception) { e.printStackTrace() }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 

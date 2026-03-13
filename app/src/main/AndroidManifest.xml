@@ -12,7 +12,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.FilmographyApp">
+        android:theme="@style/Theme.FilmographyApp"
+        android:usesCleartextTraffic="true">
         <activity
             android:name=".ComptePage.FilmAVendreActivity"
             android:exported="false"
@@ -34,7 +35,7 @@
             android:label="@string/title_activity_recherche"
             android:theme="@style/Theme.FilmographyApp" />
         <activity
-            android:name=".ComptePage.FilmOwnActivity"
+            android:name=".FilmOwnActivity"
             android:exported="false"
             android:label="@string/title_activity_film_own"
             android:theme="@style/Theme.FilmographyApp" />

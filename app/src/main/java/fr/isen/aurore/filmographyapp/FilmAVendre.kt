@@ -53,16 +53,16 @@ fun FilmAVendre(modifier: Modifier)
     val context = LocalContext.current
     val user = FirebaseAuth.getInstance().currentUser
     val userId = user?.uid ?: ""
-    val vuFilms  = remember { mutableStateListOf<String>() }
+    val filmsaVendre = remember { mutableStateListOf<String>() }
 
     LaunchedEffect(userId) {
         database.getReference("userFilms").child(userId)
             .get().addOnSuccessListener { snapshot ->
-                vuFilms.clear()
+                filmsaVendre.clear()
                 snapshot.children.forEach { filmSnap ->
-                    val watch = filmSnap.child("watch").value?.toString()
-                    if (watch == "Vu") {
-                        vuFilms.add(filmSnap.key ?: "")
+                    val sell = filmSnap.child("sell").value?.toString()
+                    if (sell == "Veut s'en débarrasser") {
+                        filmsaVendre.add(filmSnap.key ?: "")
                     }
                 }
             }
@@ -75,7 +75,7 @@ fun FilmAVendre(modifier: Modifier)
                     containerColor = Color(0xFFE50914)
                 ),
                 title = {
-                    Text("Films vus", fontWeight = FontWeight.ExtraBold, color = Color.White)
+                    Text("Mes films à vendre", fontWeight = FontWeight.ExtraBold, color = Color.White)
                 },
                 navigationIcon = {
                     IconButton(onClick = { (context as? ComponentActivity)?.finish() }) {
@@ -96,14 +96,14 @@ fun FilmAVendre(modifier: Modifier)
         ) {
             item { Spacer(modifier = Modifier.height(8.dp)) }
 
-            if (vuFilms.isEmpty()) {
+            if (filmsaVendre.isEmpty()) {
                 item {
                     Box(
                         modifier = Modifier.fillMaxWidth().padding(32.dp),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = "Tu n'as vu aucun film pour le moment.",
+                            text = "Tu n'as aucun film à vendre.",
                             color = Color.White,
                             fontSize = 16.sp,
                             textAlign = TextAlign.Center
@@ -112,7 +112,7 @@ fun FilmAVendre(modifier: Modifier)
                 }
             }
 
-            items(vuFilms) { film ->
+            items(filmsaVendre) { film ->
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -138,8 +138,8 @@ fun FilmAVendre(modifier: Modifier)
                             modifier = Modifier.weight(1f)
                         )
                         IconButton(onClick = {
-                            database.getReference("userFilms").child(userId).child(film).child("watch").removeValue()
-                            vuFilms.remove(film)
+                            database.getReference("userFilms").child(userId).child(film).child("sell").removeValue()
+                            filmsaVendre.remove(film)
                         }) {
                             Icon(Icons.Default.Delete, contentDescription = "Supprimer", tint = Color.Black)
                         }

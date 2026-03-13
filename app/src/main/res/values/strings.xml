@@ -9,4 +9,5 @@
     <string name="title_activity_carousel">CarouselActivity</string>
     <string name="title_activity_film_vu">FilmVuActivity</string>
     <string name="title_activity_film_avoir">FilmAVoirActivity</string>
+    <string name="title_activity_film_avendre">FilmAVendreActivity</string>
 </resources>

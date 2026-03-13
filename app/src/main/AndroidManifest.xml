@@ -14,6 +14,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FilmographyApp">
         <activity
+            android:name=".FilmAVendreActivity"
+            android:exported="false"
+            android:label="@string/title_activity_film_avendre"
+            android:theme="@style/Theme.FilmographyApp" />
+        <activity
             android:name=".FilmAVoirActivity"
             android:exported="false"
             android:label="@string/title_activity_film_avoir"

@@ -30,6 +30,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import com.google.firebase.auth.FirebaseAuth
 import androidx.compose.ui.graphics.Color
 import androidx.compose.runtime.LaunchedEffect
+import fr.isen.aurore.filmographyapp.ComptePage.FilmOwn
 
 enum class NavigationItem(
     val title: String,

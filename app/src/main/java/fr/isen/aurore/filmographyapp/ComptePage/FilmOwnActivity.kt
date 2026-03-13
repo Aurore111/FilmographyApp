@@ -1,4 +1,4 @@
-package fr.isen.aurore.filmographyapp
+package fr.isen.aurore.filmographyapp.ComptePage
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
+import fr.isen.aurore.filmographyapp.Vendre
 import fr.isen.aurore.filmographyapp.ui.theme.FilmographyAppTheme
 
 class FilmOwnActivity : ComponentActivity() {

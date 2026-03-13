@@ -1,4 +1,4 @@
-package fr.isen.aurore.filmographyapp
+package fr.isen.aurore.filmographyapp.ComptePage
 
 import android.content.Intent
 import androidx.compose.foundation.Image
@@ -16,11 +16,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.auth.FirebaseAuth
+import fr.isen.aurore.filmographyapp.FilmDescriptionActivity
+import fr.isen.aurore.filmographyapp.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -166,7 +168,7 @@ fun FilmOwn(modifier: Modifier) {
                             text = "Aucun film possédé pour le moment.",
                             color = Color.White,
                             fontSize = 18.sp,
-                            textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                            textAlign = TextAlign.Center
                         )
                     }
                 }

@@ -22,7 +22,7 @@ class ConnexionActivity : ComponentActivity() {
             FilmographyAppTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Connexion(
-                       modifier = Modifier.padding()
+                       modifier = Modifier.padding(innerPadding)
                     )
                 }
             }

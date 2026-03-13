@@ -253,7 +253,9 @@ fun Recherche(modifier: Modifier) { //page d'acceuil et de recherche de films
                         )
                     }
                 } else {
-                    val aVoirFilmsMaps = aVoirFilms.map { mapOf("title" to it, "year" to "") }
+                    val aVoirFilmsMaps = aVoirFilms.mapNotNull { title ->
+                        allFilms.find { it["title"] == title }
+                    }
                     FilmCarousel(aVoirFilmsMaps, context)
                 }
             }

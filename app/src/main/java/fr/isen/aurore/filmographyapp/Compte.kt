@@ -2,6 +2,7 @@ package fr.isen.aurore.filmographyapp
 
 import android.content.Intent
 import androidx.activity.ComponentActivity
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -60,6 +61,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.res.painterResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -91,10 +93,10 @@ fun Compte(modifier: Modifier) {
                     containerColor = Color(0xFFE50914)
                 ),
                 title = {
-                    Text(
-                        text = "Comptes",
-                        fontWeight = FontWeight.ExtraBold,
-                        color = Color.White
+                    Image(
+                        painter = painterResource(R.drawable.logoflix),
+                        contentDescription = "logo",
+                        modifier = Modifier.height(200.dp)
                     )
                 }
             )

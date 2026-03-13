@@ -1,6 +1,7 @@
 package fr.isen.aurore.filmographyapp
 
 import androidx.activity.ComponentActivity
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,6 +19,7 @@ import androidx.compose.ui.Alignment
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.auth.FirebaseAuth
 import androidx.compose.material.icons.Icons
+import androidx.compose.ui.res.painterResource
 import fr.isen.aurore.filmographyapp.api.OmdbApi
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -155,10 +157,10 @@ fun FilmDescription(
                     containerColor = Color(0xFFE50914)
                 ),
                 title = {
-                    Text(
-                        text = title,
-                        fontWeight = FontWeight.ExtraBold,
-                        color = Color.White
+                    Image(
+                        painter = painterResource(R.drawable.logoflix),
+                        contentDescription = "logo",
+                        modifier = Modifier.height(200.dp)
                     )
                 },
 

@@ -30,6 +30,7 @@ import com.google.firebase.database.FirebaseDatabase
 import androidx.compose.foundation.Image
 import androidx.compose.ui.res.painterResource
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.height
 import androidx.compose.ui.Alignment
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.ui.draw.blur
@@ -70,10 +71,10 @@ fun CategoriesScreen(modifier: Modifier) {
                     containerColor = Color(0xFFE50914)
                 ),
                 title = {
-                    Text(
-                        text = "Univers Films",
-                        fontWeight = FontWeight.ExtraBold,
-                        color = Color.White
+                    Image(
+                        painter = painterResource(R.drawable.logoflix),
+                        contentDescription = "logo",
+                        modifier = Modifier.height(200.dp)
                     )
                 }
             )

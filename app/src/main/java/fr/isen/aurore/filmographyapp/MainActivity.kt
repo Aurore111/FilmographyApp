@@ -38,7 +38,7 @@ enum class NavigationItem(
     val icon: ImageVector,
     val route: String
 ){
-    CheckCircle(title = "Descriptions", Icons.Default.CheckCircle, route = "CheckCircle"),
+    CheckCircle(title = "Description", Icons.Default.CheckCircle, route = "CheckCircle"),
     Home(title = "Catégories", Icons.Default.List, route = "Home"),
     Search(title = "Home", Icons.Default.Home, route = "Search"), //icone home car c'est la page d'acceuil mais le fichier s appelle rechercher
     List(title = "Possédés", Icons.Default.Create, route = "List"),
@@ -71,10 +71,9 @@ class MainActivity : ComponentActivity() {
 
                 val currentItem: MutableState<NavigationItem> =
                     remember { mutableStateOf(NavigationItem.Search) }
-
                 val randomFilm = remember { mutableStateOf<String?>(null) }
 
-                LaunchedEffect(Unit) {
+                LaunchedEffect(currentItem.value) {
                     val films = mutableListOf<String>()
 
                     ref.get().addOnSuccessListener { snapshot ->

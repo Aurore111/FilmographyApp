@@ -1,6 +1,6 @@
 package fr.isen.aurore.filmographyapp.api
 
-import fr.isen.aurore.filmographyapp.FilmApi
+import fr.isen.aurore.filmographyapp.manifest.FilmApi
 import retrofit2.http.GET
 import retrofit2.http.Query
 

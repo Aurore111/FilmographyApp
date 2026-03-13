@@ -1,4 +1,4 @@
-package fr.isen.aurore.filmographyapp
+package fr.isen.aurore.filmographyapp.manifest
 
 data class FilmApi(
     val Title: String,

@@ -43,7 +43,8 @@ fun Connexion(modifier: Modifier) {
     val avatars = listOf(
         R.drawable.avatar1,
         R.drawable.avatar2,
-        R.drawable.avatar3
+        R.drawable.avatar3,
+        R.drawable.avatar4
     )
 
     Column(
@@ -51,6 +52,7 @@ fun Connexion(modifier: Modifier) {
             .fillMaxSize()
             .background(Color(0xFF050505))
             .padding(24.dp),
+
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -85,17 +87,17 @@ fun Connexion(modifier: Modifier) {
                         contentDescription = "avatar",
                         modifier = Modifier
                             .size(70.dp)
+                            .background(
+                                if (selectedAvatar == avatar) Color.Red else Color.Transparent,
+                                shape = RoundedCornerShape(50)
+                            )
                             .clickable {
                                 selectedAvatar = avatar
                             }
                     )
-
                 }
-
             }
         }
-
-
 
         Spacer(modifier = Modifier.height(12.dp))
 
@@ -105,6 +107,7 @@ fun Connexion(modifier: Modifier) {
             label = { Text("Email", color = Color.White) },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(12.dp),
+
             colors = OutlinedTextFieldDefaults.colors(
                 focusedTextColor = Color.White,
                 unfocusedTextColor = Color.White,
@@ -126,6 +129,7 @@ fun Connexion(modifier: Modifier) {
                 label = { Text("Nom d'utilisateur", color = Color.White) },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(12.dp),
+
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedTextColor = Color.White,
                     unfocusedTextColor = Color.White,
@@ -137,7 +141,6 @@ fun Connexion(modifier: Modifier) {
                 )
             )
 
-
             Spacer(modifier = Modifier.height(20.dp))
         }
 
@@ -148,6 +151,7 @@ fun Connexion(modifier: Modifier) {
             visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(12.dp),
+
             colors = OutlinedTextFieldDefaults.colors(
                 focusedTextColor = Color.White,
                 unfocusedTextColor = Color.White,
@@ -171,14 +175,20 @@ fun Connexion(modifier: Modifier) {
                     auth.signInWithEmailAndPassword(email, password)
                         .addOnSuccessListener {
 
-                            context.startActivity(Intent(context, MainActivity::class.java))
-                            (context as? ComponentActivity)?.finish()
+                            context.startActivity(
+                                Intent(context, MainActivity::class.java)
+                            )
 
+                            (context as? ComponentActivity)?.finish()
                         }
+
                         .addOnFailureListener {
 
-                            Toast.makeText(context, "Erreur : ${it.message}", Toast.LENGTH_SHORT).show()
-
+                            Toast.makeText(
+                                context,
+                                "Erreur : ${it.message}",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
 
                 } else {
@@ -189,9 +199,10 @@ fun Connexion(modifier: Modifier) {
                             val user = result.user
                             val uid = user?.uid
 
-                            val profileUpdate = UserProfileChangeRequest.Builder()
-                                .setDisplayName(username)
-                                .build()
+                            val profileUpdate =
+                                UserProfileChangeRequest.Builder()
+                                    .setDisplayName(username)
+                                    .build()
 
                             user?.updateProfile(profileUpdate)
 
@@ -212,25 +223,34 @@ fun Connexion(modifier: Modifier) {
                                         .child(userId)
                                         .child("avatar")
                                         .setValue(it)
-
                                 }
                             }
 
-                            context.startActivity(Intent(context, MainActivity::class.java))
-                            (context as? ComponentActivity)?.finish()
+                            context.startActivity(
+                                Intent(context, MainActivity::class.java)
+                            )
 
+                            (context as? ComponentActivity)?.finish()
                         }
+
                         .addOnFailureListener {
 
-                            Toast.makeText(context, "Erreur : ${it.message}", Toast.LENGTH_SHORT).show()
-
+                            Toast.makeText(
+                                context,
+                                "Erreur : ${it.message}",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                 }
-
             },
+
             modifier = Modifier.fillMaxWidth(),
+
             shape = RoundedCornerShape(12.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE50914))
+
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFFE50914)
+            )
         ) {
 
             Text(
@@ -238,22 +258,22 @@ fun Connexion(modifier: Modifier) {
                 fontSize = 16.sp,
                 color = Color.White
             )
-
         }
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        TextButton(onClick = { isLogin = !isLogin }) {
+        TextButton(
+            onClick = { isLogin = !isLogin }
+        ) {
 
             Text(
                 text = if (isLogin)
                     "Pas de compte ? S'inscrire"
                 else
                     "Déjà un compte ? Se connecter",
+
                 color = Color.White
             )
-
         }
-
     }
 }
